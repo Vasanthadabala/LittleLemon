@@ -28,9 +28,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 
 @Composable
-fun HomeScreen()
+fun HomeScreen(navController: NavHostController)
 {
     Column {
         UpperScreen()
@@ -78,7 +79,7 @@ fun UpperScreen()
                     .fillMaxWidth(0.6F)
                     .padding(10.dp, end = 20.dp))
             Image(painter = painterResource(id = R.drawable.heroimage),
-                contentDescription = "Resturant Image",
+                contentDescription = "Restaurant Image",
                 modifier = Modifier
                     .padding(5.dp)
                     .clip(RoundedCornerShape(12.dp)))
