@@ -34,10 +34,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 
 @Composable
-fun LoginScreen(navController: NavHostController)
+fun SignUpScreen(navController:NavHostController)
 {
+    var username by remember { mutableStateOf(TextFieldValue("")) }
     var email by remember { mutableStateOf(TextFieldValue("")) }
     var password by remember { mutableStateOf(TextFieldValue("")) }
+    var confirmPassword by remember { mutableStateOf(TextFieldValue("")) }
 
     Column(Modifier.padding(0.dp)) {
         Image(painter = painterResource(id = R.drawable.logo ),
@@ -48,7 +50,7 @@ fun LoginScreen(navController: NavHostController)
                 .size(80.dp)
                 .padding(vertical = 20.dp, horizontal = 25.dp)
                 .align(Alignment.CenterHorizontally))
-        Text(text = "WelcomeBack",
+        Text(text = "Hey, Get On Board",
             fontSize = 28.sp,
             fontWeight = FontWeight.Normal,
             color = Color.White,
@@ -57,58 +59,78 @@ fun LoginScreen(navController: NavHostController)
                 .fillMaxWidth()
                 .background(Color(0xFF495E57))
                 .padding(40.dp))
-        Text(text = "Login", fontSize = 20.sp, fontWeight = FontWeight.W500,
-            modifier=Modifier.padding(20.dp)
+        Text(text = "Create Account", fontSize = 20.sp, fontWeight = FontWeight.W500,
+            modifier= Modifier.padding(20.dp)
         )
-        OutlinedTextField(value = email, onValueChange ={newText->email=newText},
-            label = { Text(text = "Firstname")},
-            placeholder = { Text(text = "Firstname")},
+        OutlinedTextField(value = username, onValueChange ={newText->username=newText},
+            label = { Text(text = "Username") },
+            placeholder = { Text(text = "Username") },
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.White)
                 .padding(vertical = 12.dp, horizontal = 14.dp),
             shape = RoundedCornerShape(16)
         )
-        OutlinedTextField(value = password , onValueChange ={newText->password=newText},
-            label = { Text(text = "Lastname")},
-            placeholder = { Text(text = "Lastname")},
+        OutlinedTextField(value = email , onValueChange ={newText->email=newText},
+            label = { Text(text = "Email") },
+            placeholder = { Text(text = "Email") },
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.White)
                 .padding(vertical = 12.dp, horizontal = 14.dp),
+            shape = RoundedCornerShape(16)
+        )
+        OutlinedTextField(value = password, onValueChange = {newText->password=newText},
+            placeholder = { Text(text = "Email") },
+            label = { Text(text = "Password") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.White)
+                .padding(vertical = 12.dp, horizontal = 16.dp),
+            shape = RoundedCornerShape(16)
+        )
+        OutlinedTextField(value = confirmPassword, onValueChange = {newText->confirmPassword=newText},
+            placeholder = { Text(text = "Confirm Password") },
+            label = { Text(text = "Confirm Password") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.White)
+                .padding(vertical = 10.dp, horizontal = 16.dp),
             shape = RoundedCornerShape(16)
         )
         Button(onClick = { navController.navigate(Home.route) },
             elevation = ButtonDefaults.buttonElevation(
                 defaultElevation = 5.dp,
                 pressedElevation = 10.dp,
-                disabledElevation = 0.dp),
+                disabledElevation = 0.dp
+            ),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 25.dp),
-            shape = RoundedCornerShape(18),
+            shape = RoundedCornerShape(32),
             colors = ButtonDefaults.buttonColors(Color.Yellow)
         ) {
-            Text(text = "Sign in", textAlign = TextAlign.Center, fontSize = 24.sp,
+            Text(text = "Sign up", textAlign = TextAlign.Center, fontSize = 24.sp,
                 color = Color.Black,
                 modifier = Modifier.padding(2.dp))
         }
         Row(modifier = Modifier.fillMaxWidth()){
             Text(
-                text = "Create Account?",
+                text = "Back to",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.W400,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(start = 100.dp),
+                modifier = Modifier.padding(start = 140.dp),
             )
             Text(
-                text = "Sign up",
+                text = "Sign in",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
-                    .clickable(onClick = {navController.navigate(Signup.route)})
-                    .padding(start = 8.dp)
+                    .clickable(onClick = {navController.navigate(Login.route)})
+                    .padding(start = 5.dp)
             )
         }
+
     }
 }
