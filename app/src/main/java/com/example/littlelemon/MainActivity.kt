@@ -29,7 +29,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
 @Composable
 fun MyNavigation()
 {
@@ -47,6 +46,10 @@ fun MyNavigation()
         composable(Home.route)
         {
             HomeScreen(navController)
+        }
+        composable(Profile.route)
+        {
+            ProfileScreen(navController)
         }
     }
 }

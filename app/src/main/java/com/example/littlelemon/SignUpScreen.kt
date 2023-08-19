@@ -2,6 +2,7 @@
 
 package com.example.littlelemon
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
@@ -32,6 +34,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import android.content.Context
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun SignUpScreen(navController:NavHostController)
@@ -40,6 +44,15 @@ fun SignUpScreen(navController:NavHostController)
     var email by remember { mutableStateOf(TextFieldValue("")) }
     var password by remember { mutableStateOf(TextFieldValue("")) }
     var confirmPassword by remember { mutableStateOf(TextFieldValue("")) }
+
+    val context= LocalContext.current
+
+    val name = username.text.toString()
+    val mail=email.text.toString()
+    val sharedPreferences = context.getSharedPreferences("MY_PRE", Context.MODE_PRIVATE)
+    val editor=sharedPreferences.edit()
+    editor.putString("UserName", name).apply()
+    editor.putString("Mail",mail).apply()
 
     Column(Modifier.padding(0.dp)) {
         Image(painter = painterResource(id = R.drawable.logo ),
@@ -57,7 +70,7 @@ fun SignUpScreen(navController:NavHostController)
             textAlign= TextAlign.Center,
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color(0xFF495E57))
+                .background(Color(0xFF41544E))
                 .padding(40.dp))
         Text(text = "Create Account", fontSize = 20.sp, fontWeight = FontWeight.W500,
             modifier= Modifier.padding(20.dp)
@@ -98,7 +111,16 @@ fun SignUpScreen(navController:NavHostController)
                 .padding(vertical = 10.dp, horizontal = 16.dp),
             shape = RoundedCornerShape(16)
         )
-        Button(onClick = { navController.navigate(Home.route) },
+        Button(onClick = {
+            if (username.text.isBlank()|| password.text.isBlank() || confirmPassword.text.isBlank() || email.text.isBlank()
+            ) {
+                Toast.makeText(context, "Registration unsuccessful. Please enter all data", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "Registration successful", Toast.LENGTH_SHORT).show()
+                navController.navigate(Home.route)
+
+            }
+        },
             elevation = ButtonDefaults.buttonElevation(
                 defaultElevation = 5.dp,
                 pressedElevation = 10.dp,

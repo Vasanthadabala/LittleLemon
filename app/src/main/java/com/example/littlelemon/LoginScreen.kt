@@ -55,13 +55,13 @@ fun LoginScreen(navController: NavHostController)
             textAlign= TextAlign.Center,
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color(0xFF495E57))
+                .background(Color(0xFF41544E))
                 .padding(40.dp))
         Text(text = "Login", fontSize = 20.sp, fontWeight = FontWeight.W500,
             modifier=Modifier.padding(20.dp)
         )
         OutlinedTextField(value = email, onValueChange ={newText->email=newText},
-            label = { Text(text = "Firstname")},
+            label = { Text(text = "Email")},
             placeholder = { Text(text = "Firstname")},
             modifier = Modifier
                 .fillMaxWidth()
@@ -70,7 +70,7 @@ fun LoginScreen(navController: NavHostController)
             shape = RoundedCornerShape(16)
         )
         OutlinedTextField(value = password , onValueChange ={newText->password=newText},
-            label = { Text(text = "Lastname")},
+            label = { Text(text = "Password")},
             placeholder = { Text(text = "Lastname")},
             modifier = Modifier
                 .fillMaxWidth()
@@ -79,6 +79,7 @@ fun LoginScreen(navController: NavHostController)
             shape = RoundedCornerShape(16)
         )
         Button(onClick = { navController.navigate(Home.route) },
+            enabled = !email.text.isBlank() && !password.text.isBlank(),
             elevation = ButtonDefaults.buttonElevation(
                 defaultElevation = 5.dp,
                 pressedElevation = 10.dp,
@@ -86,7 +87,7 @@ fun LoginScreen(navController: NavHostController)
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 25.dp),
-            shape = RoundedCornerShape(18),
+            shape = RoundedCornerShape(32),
             colors = ButtonDefaults.buttonColors(Color.Yellow)
         ) {
             Text(text = "Sign in", textAlign = TextAlign.Center, fontSize = 24.sp,
