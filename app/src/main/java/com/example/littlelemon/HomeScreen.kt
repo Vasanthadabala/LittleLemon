@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -43,47 +44,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun HomeScreen(navController: NavHostController)
+fun HomeScreen(navController:NavHostController)
 {
     Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Image(painter = painterResource(id = R.drawable.logo ),
-                        contentDescription = "Logo",
-                        contentScale = ContentScale.Fit,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .size(90.dp)
-                            .padding(vertical = 20.dp, horizontal = 25.dp))
-                },
-                navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            imageVector = Icons.Filled.Menu,
-                            contentDescription = "Menu",
-                            modifier = Modifier.size(32.dp)
-                        )
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { navController.navigate(Profile.route) }) {
-                        Icon(
-                            imageVector = Icons.Filled.AccountCircle,
-                            contentDescription = "Profile",
-                            modifier = Modifier.size(32.dp)
-                        )
-                    }
-                }
-            )
-        }
+        bottomBar = { BottomBar(navController = navController )},
+        topBar = { TopAppBar(navController = navController)}
     ) {
         Column(Modifier.padding(top = 50.dp)) {
             UpperScreen()
@@ -178,8 +149,8 @@ fun LowerScreen()
         Modifier.background(Color.White)){
         Card(modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp),
-            shape = RoundedCornerShape(12.dp),
+            .padding(vertical = 10.dp, horizontal = 5.dp),
+            shape = RoundedCornerShape(8.dp),
         )
         {
             Text(text = "WeeklySpecial",
@@ -190,7 +161,6 @@ fun LowerScreen()
                 fontWeight = FontWeight.Bold)
         }
         Row {
-
         }
     }
 }
