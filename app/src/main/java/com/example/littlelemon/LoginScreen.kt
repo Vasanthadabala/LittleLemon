@@ -2,6 +2,7 @@
 
 package com.example.littlelemon
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
@@ -36,8 +38,14 @@ import androidx.navigation.NavHostController
 @Composable
 fun LoginScreen(navController: NavHostController)
 {
+    val context= LocalContext.current
     var email by remember { mutableStateOf(TextFieldValue("")) }
     var password by remember { mutableStateOf(TextFieldValue("")) }
+
+    val mail=email.text.toString()
+    val sharedPreferences=context.getSharedPreferences("MY_PRE",Context.MODE_PRIVATE)
+    val editor=sharedPreferences.edit()
+    editor.putString("Mail",mail).apply()
 
     Column(Modifier.padding(0.dp)) {
         Image(painter = painterResource(id = R.drawable.logo ),
