@@ -48,7 +48,7 @@ fun SignUpScreen(navController:NavHostController)
     val context= LocalContext.current
 
     val name = username.text.toString()
-    val mail=email.text.toString()
+    val mail = email.text.toString()
     val sharedPreferences = context.getSharedPreferences("MY_PRE", Context.MODE_PRIVATE)
     val editor=sharedPreferences.edit()
     editor.putString("UserName", name).apply()
