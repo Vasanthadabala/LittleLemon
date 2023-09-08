@@ -1,7 +1,5 @@
 package com.example.littlelemon
 
-import io.ktor.client.call.body
-import io.ktor.client.request.get
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
