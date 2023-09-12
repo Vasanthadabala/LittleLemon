@@ -17,9 +17,11 @@ abstract class AppDataBase:RoomDatabase()
 @Dao
 interface MenuDao{
     @Query("SELECT * FROM menu_items")
-    suspend fun getAllMenuItems():List<MenuItemEntity>
+    fun getAllMenuItems():LiveData<List<MenuItemEntity>>
     @Insert
-    suspend fun insertAll(menuItems: List<MenuItemEntity>)
+    fun insertAll(menuItems: List<MenuItemEntity>)
+    @Query("SELECT (SELECT COUNT(*) FROM menu_items) == 0")
+    fun isEmpty(): Boolean
 }
 
 @Entity(tableName = "menu_items")
@@ -28,5 +30,6 @@ data class MenuItemEntity(
     val title: String,
     val description: String,
     val price: Double,
-    val image: String
+    val image: String,
+    val category: String,
 )
