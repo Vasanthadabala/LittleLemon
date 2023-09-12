@@ -14,13 +14,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.example.littlelemon.ui.theme.LittleLemonTheme
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -32,7 +29,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 
-@ExperimentalGlideComposeApi
 class MainActivity : ComponentActivity() {
 
     private val client = HttpClient(Android) {
@@ -57,7 +53,7 @@ class MainActivity : ComponentActivity() {
 
     private  fun SaveMenuToLocalDatabase(menuItems:List<MenuItemNetwork>){
         val menuItemsRoom = menuItems.map {
-            it.data()
+           it.data()
         }
         database.menuDao().insertAll(menuItemsRoom)
     }
@@ -65,7 +61,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch(Dispatchers.IO) {
-            if(database.menuDao().isEmpty()){
+            if(database.menuDao().equals(null)){
                 val menuItemNetwork = fetchMenuData()
                 SaveMenuToLocalDatabase(menuItemNetwork)
             }
@@ -84,7 +80,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 @ExperimentalMaterial3Api
-@ExperimentalGlideComposeApi
 @Composable
 fun MyNavigation(database:AppDataBase)
 {
