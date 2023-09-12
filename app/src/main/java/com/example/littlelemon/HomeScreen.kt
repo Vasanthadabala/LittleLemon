@@ -13,18 +13,23 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,18 +46,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
+import com.example.littlelemon.data.Categories
 
+@ExperimentalMaterial3Api
+@ExperimentalGlideComposeApi
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun HomeScreen(navController:NavHostController)
+fun HomeScreen(navController:NavHostController,database:AppDataBase)
 {
+    val menuItemsDatabase by database.menuDao().getAllMenuItems().observeAsState(emptyList())
     Scaffold(
         bottomBar = { BottomBar(navController = navController )},
         topBar = { TopAppBar(navController = navController)}
     ) {
         Column(Modifier.padding(top = 50.dp)) {
             UpperScreen()
-            LowerScreen()
+            LowerScreen(menuItemsDatabase)
         }
     }
 }
@@ -60,7 +71,6 @@ fun HomeScreen(navController:NavHostController)
 @Composable
 fun UpperScreen() {
     val context = LocalContext.current
-    val state by remember { mutableStateOf(0) }
     Column(
         Modifier
             .fillMaxWidth()
@@ -136,28 +146,67 @@ fun UpperScreen() {
         }
     }
 
+@ExperimentalGlideComposeApi
 @Composable
-fun LowerScreen()
-{
+fun LowerScreen(menuItemsDatabase:List<MenuItemEntity>) {
+    val dishes = menuItemsDatabase
     Column(
-        Modifier.background(Color.White)){
-        Card(
-            elevation = CardDefaults.cardElevation(2.dp),
-            colors = CardDefaults.cardColors(Color.White),
-            shape = RoundedCornerShape(5.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 3.dp, vertical = 5.dp)
+        Modifier.background(Color.White)
+    ) {
+        Text(
+            text = "Order Delivery",
+            fontWeight = FontWeight.W600,
+            fontSize = 30.sp,
+            modifier = Modifier.padding(5.dp)
         )
-        {
-            Text(text = "WeeklySpecial",
-                fontSize = 25.sp,
-                modifier = Modifier
-                    .padding(10.dp)
-                    .align(Alignment.CenterHorizontally),
-                fontWeight = FontWeight.Bold)
+        LazyRow {
+            items(Categories) { item ->
+                MenuCategory(item)
+            }
         }
-        Row {
+        Divider(modifier = Modifier.padding(8.dp), color = Color.Gray, thickness = 1.dp)
+        //MenuItems(menuItemList = dishes)
+    }
+}
+@Composable
+fun MenuCategory(category: String) {
+    Button(
+        onClick = { /*TODO*/ },
+        colors = ButtonDefaults.buttonColors(Color.Gray),
+        shape = RoundedCornerShape(40),
+        modifier = Modifier.padding(5.dp)
+    ) {
+        Text(text = category)
+    }
+}
+@ExperimentalGlideComposeApi
+@Composable
+fun MenuDish(dish:MenuItemEntity)
+{
+    Card {
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Column {
+                Text(text = dish.title, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Text(
+                    text = dish.description, color = Color.Gray, modifier = Modifier
+                        .padding(vertical = 5.dp)
+                        .fillMaxWidth(.75f)
+                )
+                Text(text = "$ ${dish.price}",
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 15.sp,
+                    color = Color.Gray)
+            }
+            GlideImage(model = dish.image , contentDescription = "" )
+        }
+    }
+}
+@ExperimentalGlideComposeApi
+@Composable
+fun MenuItems(menuItemList:List<MenuItemEntity>) {
+    LazyColumn {
+        items(menuItemList){ item ->
+            MenuDish(item)
         }
     }
 }

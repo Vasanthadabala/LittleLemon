@@ -10,11 +10,17 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.example.littlelemon.ui.theme.LittleLemonTheme
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -22,8 +28,11 @@ import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 
+@ExperimentalGlideComposeApi
 class MainActivity : ComponentActivity() {
 
     private val client = HttpClient(Android) {
@@ -42,25 +51,25 @@ class MainActivity : ComponentActivity() {
     }
     
     private val database by lazy{
-        Room.databaseBuilder(applicationContext,AppDataBase::class.java,"MenuDataBase-1").build()
+        Room.databaseBuilder(applicationContext,AppDataBase::class.java,"database1").build()
         //Stores Instance of Room database(more like dbms->database which manages the data of room)
     }
 
-    private suspend fun SaveMenuToLocalDatabase(menuItems:List<MenuItemNetwork>){
+    private  fun SaveMenuToLocalDatabase(menuItems:List<MenuItemNetwork>){
         val menuItemsRoom = menuItems.map {
-            MenuItemEntity(
-                id = it.id,
-                title = it.title,
-                description = it.description,
-                price = it.price,
-                image = it.image
-            )
+            it.data()
         }
         database.menuDao().insertAll(menuItemsRoom)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        lifecycleScope.launch(Dispatchers.IO) {
+            if(database.menuDao().isEmpty()){
+                val menuItemNetwork = fetchMenuData()
+                SaveMenuToLocalDatabase(menuItemNetwork)
+            }
+        }
         setContent {
             LittleLemonTheme {
                 // A surface container using the 'background' color from the theme
@@ -68,14 +77,16 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MyNavigation()
+                    MyNavigation(database)
                 }
             }
         }
     }
 }
+@ExperimentalMaterial3Api
+@ExperimentalGlideComposeApi
 @Composable
-fun MyNavigation()
+fun MyNavigation(database:AppDataBase)
 {
     val navController= rememberNavController()
     NavHost(navController = navController, startDestination = Login.route)
@@ -90,7 +101,7 @@ fun MyNavigation()
         }
         composable(Home.route)
         {
-            HomeScreen(navController)
+            HomeScreen(navController,database)
         }
         composable(Profile.route)
         {
