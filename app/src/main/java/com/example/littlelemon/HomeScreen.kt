@@ -194,7 +194,7 @@ fun MenuDish(dish:MenuItemEntity)
                 Text(text = "$ ${dish.price}",
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 15.sp,
-                    color = Color.Gray)
+                    color = Color.Black)
             }
         }
     }
