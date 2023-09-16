@@ -18,5 +18,11 @@ data class MenuItemNetwork(
     @SerialName("category") val category:String
 )
 {
-    fun data() = MenuItemEntity(id, title, description, price, image ,category)
+    fun data() = MenuItemEntity(
+        id = id,
+        title = title,
+        description = description,
+        price = price,
+        image = image,
+        category = category)
 }

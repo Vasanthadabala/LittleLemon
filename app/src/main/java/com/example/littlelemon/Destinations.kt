@@ -16,3 +16,6 @@ object Home:Destinations{
 object Profile:Destinations{
     override val route="Profile"
 }
+object Search:Destinations{
+    override val route="Search"
+}

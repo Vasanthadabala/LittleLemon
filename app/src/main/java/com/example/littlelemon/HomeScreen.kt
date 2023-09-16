@@ -10,6 +10,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -20,16 +22,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,25 +45,25 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.littlelemon.data.Categories
 
-@ExperimentalMaterial3Api
 @ExperimentalGlideComposeApi
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@ExperimentalMaterial3Api
 @Composable
-fun HomeScreen(navController:NavHostController,database:AppDataBase)
+fun HomeScreen(navController:NavHostController)
 {
-    val menuItemsDatabase by database.menuDao().getAllMenuItems().observeAsState(emptyList())
     Scaffold(
         bottomBar = { BottomBar(navController = navController )},
         topBar = { TopAppBar(navController = navController)}
     ) {
         Column(Modifier.padding(top = 50.dp)) {
             UpperScreen()
-            LowerScreen(menuItemsDatabase)
+            LowerScreen()
         }
     }
 }
@@ -145,13 +145,20 @@ fun UpperScreen() {
 
         }
     }
-
 @ExperimentalGlideComposeApi
 @Composable
-fun LowerScreen(menuItemsDatabase:List<MenuItemEntity>) {
-    val dishes = menuItemsDatabase
+fun LowerScreen() {
+    val viewModel:MenuViewModel = viewModel()
+    val menuItemsDatabase = viewModel.getAllDatabaseMenuItems().observeAsState(emptyList()).value
+
+    LaunchedEffect(Unit){
+        viewModel.fetchMenuDataIfNeeded()
+    }
+
     Column(
-        Modifier.background(Color.White)
+        modifier = Modifier
+            .fillMaxHeight(.9f)
+            .background(Color.White)
     ) {
         Text(
             text = "Order Delivery",
@@ -165,7 +172,11 @@ fun LowerScreen(menuItemsDatabase:List<MenuItemEntity>) {
             }
         }
         Divider(modifier = Modifier.padding(8.dp), color = Color.Gray, thickness = 1.dp)
-        //MenuItems(menuItemList = dishes)
+        LazyColumn{
+            items(menuItemsDatabase) { item ->
+                MenuDish(item)
+            }
+        }
     }
 }
 @Composable
@@ -183,30 +194,37 @@ fun MenuCategory(category: String) {
 @Composable
 fun MenuDish(dish:MenuItemEntity)
 {
-    Card {
-        Row(modifier = Modifier.fillMaxWidth()) {
-            Column {
-                Text(text = dish.title, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+    Card(
+        elevation = CardDefaults.cardElevation(1.dp),
+        shape = RoundedCornerShape(0.dp),
+        colors = CardDefaults.cardColors(Color.White),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 1.dp,)
+    ) {
+        Row(modifier = Modifier.padding(8.dp)) {
+            Column{
                 Text(
-                    text = dish.description, color = Color.Gray, modifier = Modifier
-                        .padding(vertical = 5.dp)
+                    text = dish.title,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.W800,
+                    modifier = Modifier.padding(5.dp))
+                Text(
+                    text = dish.description,
+                    color = Color.Gray,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.W600,
+                    modifier = Modifier
+                        .padding(5.dp)
                         .fillMaxWidth(.75f)
                 )
                 Text(text = "$ ${dish.price}",
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 15.sp,
-                    color = Color.Gray)
+                    fontWeight = FontWeight.W800,
+                    fontSize = 16.sp,
+                    color = Color.Gray,
+                    modifier = Modifier.padding(5.dp))
             }
-            GlideImage(model = dish.image , contentDescription = "" )
-        }
-    }
-}
-@ExperimentalGlideComposeApi
-@Composable
-fun MenuItems(menuItemList:List<MenuItemEntity>) {
-    LazyColumn {
-        items(menuItemList){ item ->
-            MenuDish(item)
+            GlideImage(model = dish.image, contentDescription = "Image" ,Modifier.size(100.dp) )
         }
     }
 }
