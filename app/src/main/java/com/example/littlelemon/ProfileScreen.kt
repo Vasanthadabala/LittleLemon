@@ -77,7 +77,7 @@ fun InfoScreen(navController: NavHostController) {
                 modifier = Modifier.padding(10.dp)
             )
             Text(
-                text = "UserName:$savedName",
+                text = "Username:$savedName",
                 textAlign = TextAlign.Start,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Normal,

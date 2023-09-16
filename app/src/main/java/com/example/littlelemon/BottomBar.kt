@@ -52,7 +52,7 @@ fun BottomBar(navController: NavHostController) {
             )
             BottomNavigationItem(
                 selected = (selectedIndex.value == 1),
-                onClick = { },
+                onClick = {navController.navigate(Search.route) },
                 icon = {
                     Icon(
                         imageVector = Icons.Default.Search,
