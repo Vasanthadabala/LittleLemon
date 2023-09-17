@@ -41,9 +41,10 @@ fun MyNavigation(context: Context)
     }
 }
 
-private fun destination(context: Context):String{
+fun destination(context: Context):String{
     val sharedPreferences = context.getSharedPreferences("MY_PRE",Context.MODE_PRIVATE)
-    if(sharedPreferences.getBoolean("userRegistered",false))
+    val isLoggedin = sharedPreferences.getBoolean("isLoggedin",false)
+    if(isLoggedin)
     {
         return Home.route
     }

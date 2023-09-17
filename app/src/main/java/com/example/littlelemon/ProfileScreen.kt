@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -44,8 +45,9 @@ fun InfoScreen(navController: NavHostController) {
 
     val context = LocalContext.current
     val sharedPrefernces = context.getSharedPreferences("MY_PRE", Context.MODE_PRIVATE)
-    val savedName = sharedPrefernces.getString("UserName", "")
-    val savedMail = sharedPrefernces.getString("Mail", "")
+    val savedName = sharedPrefernces.getString("UserName", "Jhon")?:"John"
+    val savedMail = sharedPrefernces.getString("Mail", "")?:"John@mail.com"
+    val editor = sharedPrefernces.edit()
     Column(
         Modifier
             .padding(0.dp)
@@ -73,28 +75,53 @@ fun InfoScreen(navController: NavHostController) {
                 text = "Profile Information",
                 textAlign = TextAlign.Start,
                 fontSize = 28.sp,
-                fontWeight = FontWeight.W500,
-                modifier = Modifier.padding(10.dp)
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.padding(vertical = 5.dp, horizontal = 5.dp )
             )
-            Text(
-                text = "Username:$savedName",
-                textAlign = TextAlign.Start,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Normal,
-                modifier = Modifier.padding(10.dp)
-            )
-            Text(
-                text = "Email:$savedMail",
-                textAlign = TextAlign.Start,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Normal,
-                modifier = Modifier.padding(10.dp)
-            )
+            Row {
+                Text(
+                    text = "Username:",
+                    textAlign = TextAlign.Start,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.W500,
+                    modifier = Modifier.padding(vertical = 5.dp, horizontal = 5.dp )
+                )
+                Text(
+                    text = savedName,
+                    textAlign = TextAlign.Start,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.W500,
+                    color = Color.DarkGray, // Change the color here
+                    modifier = Modifier.padding(vertical = 5.dp, horizontal = 1.dp )
+                )
+            }
+            Row {
+                Text(
+                    text = "Email:",
+                    textAlign = TextAlign.Start,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.W500,
+                    modifier = Modifier.padding(vertical = 5.dp, horizontal = 5.dp )
+                )
+                Text(
+                    text = savedMail,
+                    textAlign = TextAlign.Start,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.W500,
+                    color = Color.DarkGray, // Change the color here
+                    modifier = Modifier.padding(vertical = 5.dp, horizontal = 1.dp )
+                )
+            }
         }
         Button(
             onClick = {
                 clearSharedPreferences(context)
-                navController.navigate(Login.route)
+                editor.putBoolean("isLoggedin",false).apply()
+                navController.navigate(Login.route){
+                    popUpTo(navController.graph.id){
+                        inclusive = true
+                    }
+                }
             },
             elevation = ButtonDefaults.buttonElevation(
                 defaultElevation = 5.dp,

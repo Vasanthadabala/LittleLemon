@@ -76,6 +76,7 @@ fun SignUpScreen(navController:NavHostController)
         )
         OutlinedTextField(value = username, onValueChange ={newText->username=newText},
             label = { Text(text = "Username") },
+            singleLine = true,
             placeholder = { Text(text = "Username") },
             modifier = Modifier
                 .fillMaxWidth()
@@ -84,6 +85,7 @@ fun SignUpScreen(navController:NavHostController)
             shape = RoundedCornerShape(16)
         )
         OutlinedTextField(value = email , onValueChange ={newText->email=newText},
+            singleLine = true,
             label = { Text(text = "Email") },
             placeholder = { Text(text = "Email") },
             modifier = Modifier
@@ -93,7 +95,8 @@ fun SignUpScreen(navController:NavHostController)
             shape = RoundedCornerShape(16)
         )
         OutlinedTextField(value = password, onValueChange = {newText->password=newText},
-            placeholder = { Text(text = "Email") },
+            singleLine = true,
+            placeholder = { Text(text = "Password") },
             label = { Text(text = "Password") },
             modifier = Modifier
                 .fillMaxWidth()
@@ -103,6 +106,7 @@ fun SignUpScreen(navController:NavHostController)
         )
         OutlinedTextField(value = confirmPassword, onValueChange = {newText->confirmPassword=newText},
             placeholder = { Text(text = "Confirm Password") },
+            singleLine = true,
             label = { Text(text = "Confirm Password") },
             modifier = Modifier
                 .fillMaxWidth()
@@ -116,8 +120,8 @@ fun SignUpScreen(navController:NavHostController)
                 Toast.makeText(context, "Registration unsuccessful. Please enter all data", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(context, "Registration successful", Toast.LENGTH_SHORT).show()
+                editor.putBoolean("isLoggedin",true).apply()
                 navController.navigate(Home.route)
-
             }
         },
             elevation = ButtonDefaults.buttonElevation(
