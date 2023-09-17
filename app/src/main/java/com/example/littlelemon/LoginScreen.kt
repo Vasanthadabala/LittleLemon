@@ -70,7 +70,8 @@ fun LoginScreen(navController: NavHostController)
         )
         OutlinedTextField(value = email, onValueChange ={newText->email=newText},
             label = { Text(text = "Email")},
-            placeholder = { Text(text = "Firstname")},
+            singleLine = true,
+            placeholder = { Text(text = "Email")},
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.White)
@@ -79,14 +80,22 @@ fun LoginScreen(navController: NavHostController)
         )
         OutlinedTextField(value = password , onValueChange ={newText->password=newText},
             label = { Text(text = "Password")},
-            placeholder = { Text(text = "Lastname")},
+            singleLine = true,
+            placeholder = { Text(text = "Password")},
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.White)
                 .padding(vertical = 12.dp, horizontal = 14.dp),
             shape = RoundedCornerShape(16)
         )
-        Button(onClick = { navController.navigate(Home.route) },
+        Button(onClick = {
+            editor.putBoolean("isLoggedin",true).apply()
+            navController.navigate(Home.route){
+                popUpTo(navController.graph.id){
+                    inclusive = true
+                }
+            }
+            },
             enabled = !email.text.isBlank() && !password.text.isBlank(),
             elevation = ButtonDefaults.buttonElevation(
                 defaultElevation = 5.dp,
