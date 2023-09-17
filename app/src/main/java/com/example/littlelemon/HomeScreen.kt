@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -29,7 +28,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -150,6 +153,9 @@ fun UpperScreen() {
 fun LowerScreen() {
     val viewModel:MenuViewModel = viewModel()
     val menuItemsDatabase = viewModel.getAllDatabaseMenuItems().observeAsState(emptyList()).value
+    val categories = Categories
+
+    var selectedCategory by remember { mutableStateOf(categories.first()) }
 
     LaunchedEffect(Unit){
         viewModel.fetchMenuDataIfNeeded()
@@ -167,24 +173,25 @@ fun LowerScreen() {
             modifier = Modifier.padding(5.dp)
         )
         LazyRow {
-            items(Categories) { item ->
-                MenuCategory(item)
+            items(categories) { category ->
+                MenuCategory(category = category ,isSelected = selectedCategory == category, onCategorySelected = {selectedCategory = category})
             }
         }
+
         Divider(modifier = Modifier.padding(8.dp), color = Color.Gray, thickness = 1.dp)
         LazyColumn{
-            items(menuItemsDatabase) { item ->
+            items(menuItemsDatabase.filter { it.category == selectedCategory }) { item ->
                 MenuDish(item)
             }
         }
     }
 }
 @Composable
-fun MenuCategory(category: String) {
+fun MenuCategory(category: String,isSelected:Boolean,onCategorySelected:()-> Unit) {
     Button(
-        onClick = { /*TODO*/ },
-        colors = ButtonDefaults.buttonColors(Color.Gray),
-        shape = RoundedCornerShape(40),
+        onClick = { onCategorySelected() },
+        colors = ButtonDefaults.buttonColors(if (isSelected) Color.DarkGray else Color.Gray),
+        shape = RoundedCornerShape(48),
         modifier = Modifier.padding(5.dp)
     ) {
         Text(text = category)
@@ -200,7 +207,7 @@ fun MenuDish(dish:MenuItemEntity)
         colors = CardDefaults.cardColors(Color.White),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 1.dp,)
+            .padding(vertical = 1.dp)
     ) {
         Row(modifier = Modifier.padding(8.dp)) {
             Column{
