@@ -10,7 +10,7 @@ This is the ANDROID App Capstone Project of the Meta ANDROID Developer Professio
 
 ## Tech Stack
 
-**Client:** Koltin - Jetpack Compose
+**Client:** Koltin - Jetpack Compose - Ktor HttpClient - Room Database - SharedPreferences
 
 
 
