@@ -59,7 +59,7 @@ Build and Run on the emulator / physical device
 Provide contact information for users who have questions or need support. This could be an email address, a link to your GitHub profile, or a dedicated support page:
 
 - Email: [vasanthadabala@gmail.com](mailto:your@email.com)
-- GitHub: [github.com/Vasanthadabala]
+- GitHub: [github.com/Vasanthadabala](https://github.com/yourusername)
 
 ## Acknowledgments
 
