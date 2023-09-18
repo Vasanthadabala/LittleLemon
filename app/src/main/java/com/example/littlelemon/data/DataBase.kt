@@ -1,4 +1,4 @@
-package com.example.littlelemon
+package com.example.littlelemon.data
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -12,7 +12,7 @@ import androidx.room.RoomDatabase
 @Database(entities = [MenuItemEntity::class], version = 1, exportSchema = false)
 abstract class AppDataBase:RoomDatabase()
 {
-    abstract fun menuDao():MenuDao //connecting dao interface to function so we can access and perform operations menu items.
+    abstract fun menuDao(): MenuDao //connecting dao interface to function so we can access and perform operations menu items.
 }
 @Dao
 interface MenuDao{

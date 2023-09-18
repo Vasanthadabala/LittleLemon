@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.example.littlelemon
+package com.example.littlelemon.screen
 
 import android.annotation.SuppressLint
 import android.widget.Toast
@@ -52,6 +52,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.example.littlelemon.navigation.BottomBar
+import com.example.littlelemon.data.MenuItemEntity
+import com.example.littlelemon.data.MenuViewModel
+import com.example.littlelemon.R
+import com.example.littlelemon.navigation.TopAppBar
 import com.example.littlelemon.data.Categories
 
 @ExperimentalGlideComposeApi
@@ -61,8 +66,8 @@ import com.example.littlelemon.data.Categories
 fun HomeScreen(navController:NavHostController)
 {
     Scaffold(
-        bottomBar = { BottomBar(navController = navController )},
-        topBar = { TopAppBar(navController = navController)}
+        bottomBar = { BottomBar(navController = navController ) },
+        topBar = { TopAppBar(navController = navController) }
     ) {
         Column(Modifier.padding(top = 50.dp)) {
             UpperScreen()
@@ -151,7 +156,7 @@ fun UpperScreen() {
 @ExperimentalGlideComposeApi
 @Composable
 fun LowerScreen() {
-    val viewModel:MenuViewModel = viewModel()
+    val viewModel: MenuViewModel = viewModel()
     val menuItemsDatabase = viewModel.getAllDatabaseMenuItems().observeAsState(emptyList()).value
     val categories = Categories
 
@@ -199,7 +204,7 @@ fun MenuCategory(category: String,isSelected:Boolean,onCategorySelected:()-> Uni
 }
 @ExperimentalGlideComposeApi
 @Composable
-fun MenuDish(dish:MenuItemEntity)
+fun MenuDish(dish: MenuItemEntity)
 {
     Card(
         elevation = CardDefaults.cardElevation(1.dp),

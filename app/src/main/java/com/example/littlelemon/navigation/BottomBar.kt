@@ -1,4 +1,4 @@
-package com.example.littlelemon
+package com.example.littlelemon.navigation
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height

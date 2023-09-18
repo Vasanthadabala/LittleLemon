@@ -1,8 +1,9 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.example.littlelemon
+package com.example.littlelemon.screen
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -34,6 +35,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.littlelemon.navigation.Home
+import com.example.littlelemon.R
+import com.example.littlelemon.navigation.Signup
 
 @Composable
 fun LoginScreen(navController: NavHostController)
@@ -48,7 +52,7 @@ fun LoginScreen(navController: NavHostController)
     editor.putString("Mail",mail).apply()
 
     Column(Modifier.padding(0.dp)) {
-        Image(painter = painterResource(id = R.drawable.logo ),
+        Image(painter = painterResource(id = R.drawable.logo),
             contentDescription = "Logo",
             contentScale = ContentScale.Fit,
             modifier = Modifier
@@ -78,7 +82,9 @@ fun LoginScreen(navController: NavHostController)
                 .padding(vertical = 12.dp, horizontal = 14.dp),
             shape = RoundedCornerShape(16)
         )
-        OutlinedTextField(value = password , onValueChange ={newText->password=newText},
+        OutlinedTextField(
+            value = password ,
+            onValueChange ={newText->password=newText},
             label = { Text(text = "Password")},
             singleLine = true,
             placeholder = { Text(text = "Password")},
@@ -89,6 +95,7 @@ fun LoginScreen(navController: NavHostController)
             shape = RoundedCornerShape(16)
         )
         Button(onClick = {
+            Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show()
             editor.putBoolean("isLoggedin",true).apply()
             navController.navigate(Home.route){
                 popUpTo(navController.graph.id){

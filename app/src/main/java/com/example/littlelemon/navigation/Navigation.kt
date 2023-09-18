@@ -1,14 +1,17 @@
-package com.example.littlelemon
+package com.example.littlelemon.navigation
 
 import android.content.Context
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.example.littlelemon.screen.HomeScreen
+import com.example.littlelemon.screen.LoginScreen
+import com.example.littlelemon.screen.ProfileScreen
+import com.example.littlelemon.screen.SearchScreen
+import com.example.littlelemon.screen.SignUpScreen
 
 @ExperimentalGlideComposeApi
 @ExperimentalMaterial3Api

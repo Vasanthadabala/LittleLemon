@@ -1,21 +1,21 @@
-package com.example.littlelemon
+package com.example.littlelemon.navigation
 
 interface Destinations
 {
     val route:String
 }
-object Login:Destinations{
+object Login: Destinations {
     override val route="Login"
 }
-object Signup:Destinations{
+object Signup: Destinations {
     override val route="Signup"
 }
-object Home:Destinations{
+object Home: Destinations {
     override val route="Home"
 }
-object Profile:Destinations{
+object Profile: Destinations {
     override val route="Profile"
 }
-object Search:Destinations{
+object Search: Destinations {
     override val route="Search"
 }

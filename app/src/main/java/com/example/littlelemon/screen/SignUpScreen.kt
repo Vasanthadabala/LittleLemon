@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.example.littlelemon
+package com.example.littlelemon.screen
 
 import android.content.Context
 import android.widget.Toast
@@ -35,6 +35,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.littlelemon.navigation.Home
+import com.example.littlelemon.navigation.Login
+import com.example.littlelemon.R
 
 @Composable
 fun SignUpScreen(navController:NavHostController)
@@ -54,7 +57,7 @@ fun SignUpScreen(navController:NavHostController)
     editor.putString("Mail",mail).apply()
 
     Column(Modifier.padding(0.dp)) {
-        Image(painter = painterResource(id = R.drawable.logo ),
+        Image(painter = painterResource(id = R.drawable.logo),
             contentDescription = "Logo",
             contentScale = ContentScale.Fit,
             modifier = Modifier
@@ -118,7 +121,10 @@ fun SignUpScreen(navController:NavHostController)
             if (username.text.isBlank()|| password.text.isBlank() || confirmPassword.text.isBlank() || email.text.isBlank()
             ) {
                 Toast.makeText(context, "Registration unsuccessful. Please enter all data", Toast.LENGTH_SHORT).show()
-            } else {
+            } else if(password != confirmPassword)
+            {
+                Toast.makeText(context, "Passwords not same", Toast.LENGTH_SHORT).show()
+            }else {
                 Toast.makeText(context, "Registration successful", Toast.LENGTH_SHORT).show()
                 editor.putBoolean("isLoggedin",true).apply()
                 navController.navigate(Home.route)
