@@ -1,4 +1,4 @@
-package com.example.littlelemon
+package com.example.littlelemon.navigation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,6 +17,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.littlelemon.R
 
 @ExperimentalMaterial3Api
 @Composable
@@ -24,7 +25,7 @@ fun TopAppBar(navController:NavHostController)
 {
     CenterAlignedTopAppBar(
         title = {
-            Image(painter = painterResource(id = R.drawable.logo ),
+            Image(painter = painterResource(id = R.drawable.logo),
                 contentDescription = "Logo",
                 contentScale = ContentScale.Fit,
                 modifier = Modifier

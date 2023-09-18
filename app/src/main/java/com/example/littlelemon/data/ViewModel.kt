@@ -1,4 +1,4 @@
-package com.example.littlelemon
+package com.example.littlelemon.data
 
 import android.annotation.SuppressLint
 import android.app.Application
