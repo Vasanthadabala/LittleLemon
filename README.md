@@ -33,7 +33,7 @@ Customers of Little Lemon Restaurant who prefer the convenience of ordering food
 - The app uses Jetpack Compose for building the UI, providing a modern and declarative approach to UI development.
 - It follows the MVVM architecture pattern, separating the data, view, and business logic.
 - Navigation between screens is handled using the Navigation component.
-- The app integrates with external libraries like Coil for efficient image loading and caching.
+- The app integrates with external libraries like Glide for efficient image loading and caching.
 - It leverages Kotlin's serialization library for decoding JSON files.
 - The app demonstrates the use of state management and observables to update the UI dynamically.
 ## Run Locally
