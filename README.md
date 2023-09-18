@@ -1,68 +1,68 @@
 # Little Lemon Food Ordering App
 
-[![logo.png](https://i.postimg.cc/K8TgbQs8/logo.png)](https://postimg.cc/DS2zdQT9)
+![App Logo](https://i.postimg.cc/K8TgbQs8/logo.png)
 
 ## Description
 
-This is the ANDROID App Capstone Project of the Meta ANDROID Developer Professional Certificate program. It allows users to browse the Little Lemon restaurant's menu on the app.
-
-
+The "Little Lemon Food Ordering App" is the final project for the Meta ANDROID Developer Professional Certificate program. This Android application allows users to conveniently browse the menu of the Little Lemon restaurant and place their food orders directly through the app.
 
 ## Tech Stack
 
-**Client:** Koltin - Jetpack Compose - Ktor HttpClient - Room Database - SharedPreferences
+- **Client:** Kotlin
+- **UI:** Jetpack Compose
+- **Networking:** Ktor HttpClient
+- **Local Database:** Room Database
+- **Local Data Storage:** SharedPreferences
 
+## Users
 
+### Customers:
 
-## Used By
+The "Little Lemon Food Ordering App" is designed for customers of the Little Lemon Restaurant who seek a modern and convenient way to order their favorite dishes. Here's how it caters to their needs:
 
-This system is used by:
+- **User-Friendly Interface:** The app provides an intuitive interface for easy navigation through the menu, customization of orders, and placing takeout orders.
 
-- **Customers**:
+- **Menu Exploration:** Customers can browse a diverse menu that offers a modern twist on Mediterranean recipes.
 
-Customers of Little Lemon Restaurant who prefer the convenience of ordering food through a mobile application. It caters to individuals who want a pleasant and user-friendly experience while browsing the restaurant's menu, customizing their orders, and placing takeout orders. The app is designed to enhance the overall dining experience by providing an intuitive interface for navigating through different sections, sorting and filtering menu items, and seamlessly completing the food ordering process. It aims to attract and retain customers who seek a modern and convenient way of ordering food from the restaurant.
+- **Search Functionality:** To quickly find specific dishes, users can use the search functionality.
 
+- **Visual Appeal:** The app leverages modern UI design principles using Jetpack Compose, offering an aesthetically pleasing experience.
 
-## Features
+- **Architecture:** Following the MVVM architecture pattern ensures clean separation of data, view, and business logic.
 
-- The app is a Mediterranean restaurant app, showcasing a modern twist on traditional recipes.
-- It has a visually appealing home screen with a hero section displaying an image and descriptive text.
-- The menu section displays a list of menu items fetched from a database.
-- Each menu item includes an image, title, price, and description.
-- Users can search for specific menu items using a search functionality.
-- The app uses Jetpack Compose for building the UI, providing a modern and declarative approach to UI development.
-- It follows the MVVM architecture pattern, separating the data, view, and business logic.
-- Navigation between screens is handled using the Navigation component.
-- The app integrates with external libraries like Glide for efficient image loading and caching.
-- It leverages Kotlin's serialization library for decoding JSON files.
-- The app demonstrates the use of state management and observables to update the UI dynamically.
-## Run Locally
+- **Navigation:** The Navigation component simplifies screen navigation, enhancing the overall user experience.
 
-Clone the project
+- **Performance:** The app uses libraries like Glide for efficient image loading and caching, and Kotlin's serialization library for JSON decoding.
 
-```bash
-  git clone https://link-to-project
-```
+- **Dynamic UI:** State management and observables ensure real-time updates to the user interface.
 
-Go to the project directory in Android Studio
+## Getting Started
 
-```bash
-  cd little-lemon
-```
+To run the app locally, follow these steps:
 
-Add dependencies to gradle.build file
+1. Clone the project:
 
-Build and Run on the emulator / physical device
+   ```bash
+   git clone https://link-to-project
+   ```
+
+2. Open the project directory in Android Studio.
+
+3. Add dependencies to the `build.gradle` file.
+
+4. Build and run the app on an emulator or physical device.
 
 ## Contact
 
-Provide contact information for users who have questions or need support. This could be an email address, a link to your GitHub profile, or a dedicated support page:
+For any questions or support, feel free to reach out:
 
-- Email: [vasanthadabala@gmail.com](mailto:your@email.com)
-- GitHub: [github.com/Vasanthadabala](https://github.com/yourusername)
+- **Email:** [vasanthadabala@gmail.com](mailto:vasanthadabala@gmail.com)
+- **GitHub:** [github.com/Vasanthadabala](https://github.com/Vasanthadabala)
 
 ## Acknowledgments
 
-If your app uses third-party libraries, frameworks, or resources, give credit and provide links to the respective authors or projects.
+We acknowledge the valuable contributions of third-party libraries, frameworks, and resources that have enhanced the development of this app.
 
 ---
+
+These enhancements provide more structure and detail to your README file, making it more informative and user-friendly. Remember to replace "https://link-to-project" with the actual URL of your project repository.
