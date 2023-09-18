@@ -61,11 +61,3 @@ For any questions or support, feel free to reach out:
 
 - **Email:** [vasanthadabala@gmail.com](mailto:vasanthadabala@gmail.com)
 - **GitHub:** [github.com/Vasanthadabala](https://github.com/Vasanthadabala)
-
-## Acknowledgments
-
-We acknowledge the valuable contributions of third-party libraries, frameworks, and resources that have enhanced the development of this app.
-
----
-
-These enhancements provide more structure and detail to your README file, making it more informative and user-friendly. Remember to replace "https://link-to-project" with the actual URL of your project repository.
