@@ -3,6 +3,7 @@ package com.example.littlelemon.navigation
 import android.content.Context
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -13,6 +14,7 @@ import com.example.littlelemon.screen.ProfileScreen
 import com.example.littlelemon.screen.SearchScreen
 import com.example.littlelemon.screen.SignUpScreen
 
+@ExperimentalComposeUiApi
 @ExperimentalGlideComposeApi
 @ExperimentalMaterial3Api
 @Composable
