@@ -13,12 +13,9 @@ import androidx.navigation.navArgument
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.example.littlelemon.screen.CartScreen
 import com.example.littlelemon.screen.HomeScreen
-<<<<<<< HEAD
-import com.example.littlelemon.screen.LoginScreen
 import com.example.littlelemon.screen.MenuItemDetilsScreen
-=======
->>>>>>> 56d216785f4db1071ef8d8c11d968190a4c3ecd0
 import com.example.littlelemon.screen.ProfileScreen
+import com.example.littlelemon.screen.SearchScreen
 import com.example.littlelemon.screen.SignUpScreen
 
 @SuppressLint("SuspiciousIndentation")
@@ -42,7 +39,6 @@ fun MyNavigation(context: Context) {
         {
             ProfileScreen(navController)
         }
-<<<<<<< HEAD
         composable(Search.route)
         {
             SearchScreen(navController)
@@ -58,8 +54,6 @@ fun MyNavigation(context: Context) {
             val id = requireNotNull(it.arguments?.getInt(MenuItemDetails.dishID))
                 MenuItemDetilsScreen(navController,id)
         }
-=======
->>>>>>> 56d216785f4db1071ef8d8c11d968190a4c3ecd0
     }
 }
 
