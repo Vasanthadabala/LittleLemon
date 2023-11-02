@@ -6,7 +6,9 @@ import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -35,6 +37,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.littlelemon.R
 import com.example.littlelemon.navigation.Home
+import com.example.littlelemon.navigation.Signin
+import com.example.littlelemon.navigation.Signup
 
 @Composable
 fun SignUpScreen(navController:NavHostController)
@@ -129,7 +133,7 @@ fun SignUpScreen(navController:NavHostController)
                 Toast.makeText(context, "Registration unsuccessful. Please enter all data", Toast.LENGTH_SHORT).show()
             }else {
                 Toast.makeText(context, "Registration successful", Toast.LENGTH_SHORT).show()
-                editor.putBoolean("isLoggedin",true).apply()
+                editor.putBoolean("isSignedup",true).apply()
                 navController.navigate(Home.route)
                 {
                     popUpTo(navController.graph.id){
@@ -144,7 +148,7 @@ fun SignUpScreen(navController:NavHostController)
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 100.dp, bottom = 20.dp, start = 14.dp, end = 14.dp),
+                .padding(top = 40.dp, bottom = 20.dp, start = 14.dp, end = 14.dp),
             shape = RoundedCornerShape(24),
             colors = ButtonDefaults.buttonColors(Color.Yellow)
         ) {
@@ -152,6 +156,22 @@ fun SignUpScreen(navController:NavHostController)
                 color = Color.Black,
                 modifier = Modifier.padding(2.dp))
         }
+        Row {
+            Text(
+                text = "Sign In To Account",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Normal,
+                modifier = Modifier.padding(start = 80.dp)
+            )
+            Text(
+                text = "Signin",
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .padding(start = 10.dp, top = 2.dp)
+                    .clickable { navController.navigate(Signin.route)})
+        }
 
     }
+
 }
