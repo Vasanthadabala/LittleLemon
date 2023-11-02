@@ -4,6 +4,9 @@ interface Destinations
 {
     val route:String
 }
+object Signin: Destinations {
+    override val route="Signin"
+}
 object Signup: Destinations {
     override val route="Signup"
 }

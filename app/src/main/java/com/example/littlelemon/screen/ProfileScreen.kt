@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.littlelemon.R
+import com.example.littlelemon.navigation.Signin
 import com.example.littlelemon.navigation.Signup
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @ExperimentalMaterial3Api
@@ -56,6 +57,9 @@ fun ProfileScreenComponent(navController: NavHostController) {
     val firstName = sharedPrefernces.getString("FirstName","")
     val lastName = sharedPrefernces.getString("LastName", "")
     val savedMail = sharedPrefernces.getString("Mail", "")
+    val userName = sharedPrefernces.getString("UserName","")
+    val isSignedIn =sharedPrefernces.getBoolean("isSignedin",false)
+    val fullName = firstName+lastName
     val editor = sharedPrefernces.edit()
     Column(
         Modifier
@@ -63,16 +67,6 @@ fun ProfileScreenComponent(navController: NavHostController) {
             .fillMaxWidth()
     )
     {
-        Image(
-            painter = painterResource(id = R.drawable.logo),
-            contentDescription = "Logo",
-            contentScale = ContentScale.Fit,
-            modifier = Modifier
-                .fillMaxWidth()
-                .size(90.dp)
-                .padding(vertical = 20.dp, horizontal = 25.dp)
-                .align(Alignment.CenterHorizontally)
-        )
         Text(
             text = "Profile Information",
             textAlign = TextAlign.Start,
@@ -82,19 +76,19 @@ fun ProfileScreenComponent(navController: NavHostController) {
         )
         Column {
             Text(
-                text = "First name",
+                text = "User name",
                 textAlign = TextAlign.Start,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.W500,
                 modifier = Modifier.padding(top = 10.dp, start = 14.dp)
             )
             OutlinedTextField(
-                value = firstName.toString(),
+                value = if(isSignedIn) userName?:"" else "$firstName $lastName",
                 onValueChange = {},
                 readOnly = true,
                 enabled = false,
                 textStyle = LocalTextStyle.current.copy(
-                    fontWeight = FontWeight.W500,
+                    fontWeight = FontWeight.W600,
                     fontSize = 18.sp,
                     color = Color.Gray
                 ),
@@ -103,29 +97,6 @@ fun ProfileScreenComponent(navController: NavHostController) {
                     .background(Color.White)
                     .padding(vertical = 12.dp, horizontal = 14.dp),
                 shape = RoundedCornerShape(15)
-            )
-            Text(
-                text = "Last name",
-                textAlign = TextAlign.Start,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.W500,
-                modifier = Modifier.padding(top = 10.dp, start = 14.dp)
-            )
-            OutlinedTextField(
-                value = lastName.toString(),
-                onValueChange = {},
-                readOnly = true,
-                enabled = false,
-                textStyle = LocalTextStyle.current.copy(
-                    fontWeight = FontWeight.W500,
-                    fontSize = 18.sp,
-                    color = Color.Gray
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.White)
-                    .padding(vertical = 12.dp, horizontal = 14.dp),
-                shape = RoundedCornerShape(15),
             )
             Text(
                 text = "Email",
@@ -140,7 +111,7 @@ fun ProfileScreenComponent(navController: NavHostController) {
                 readOnly = true,
                 enabled = false,
                 textStyle = LocalTextStyle.current.copy(
-                    fontWeight = FontWeight.W500,
+                    fontWeight = FontWeight.W600,
                     fontSize = 18.sp,
                     color = Color.Gray
                 ),
@@ -155,7 +126,7 @@ fun ProfileScreenComponent(navController: NavHostController) {
             onClick = {
                 clearSharedPreferences(context)
                 editor.putBoolean("isLoggedin",false).apply()
-                navController.navigate(Signup.route){
+                navController.navigate(Signin.route){
                     popUpTo(navController.graph.id){
                         inclusive = true
                     }

@@ -16,6 +16,7 @@ import com.example.littlelemon.screen.HomeScreen
 import com.example.littlelemon.screen.MenuItemDetilsScreen
 import com.example.littlelemon.screen.ProfileScreen
 import com.example.littlelemon.screen.SearchScreen
+import com.example.littlelemon.screen.SignInScreen
 import com.example.littlelemon.screen.SignUpScreen
 
 @SuppressLint("SuspiciousIndentation")
@@ -27,6 +28,10 @@ fun MyNavigation(context: Context) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = destination(context))
     {
+        composable(Signin.route)
+        {
+            SignInScreen(navController)
+        }
         composable(Signup.route)
         {
             SignUpScreen(navController)
@@ -59,13 +64,14 @@ fun MyNavigation(context: Context) {
 
 fun destination(context: Context):String{
     val sharedPreferences = context.getSharedPreferences("MY_PRE",Context.MODE_PRIVATE)
-    val isLoggedin = sharedPreferences.getBoolean("isLoggedin",false)
-    if(isLoggedin)
+    val isSignedin = sharedPreferences.getBoolean("isSignedin",false)
+    val isSignedup = sharedPreferences.getBoolean("isSignedup",false)
+    if(isSignedin || isSignedup)
     {
         return Home.route
     }
     else
     {
-        return Signup.route
+        return Signin.route
     }
 }
