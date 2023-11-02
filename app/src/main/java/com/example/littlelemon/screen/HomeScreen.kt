@@ -3,8 +3,6 @@
 package com.example.littlelemon.screen
 
 import android.annotation.SuppressLint
-import android.widget.Toast
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -21,12 +19,18 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -44,12 +48,13 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -60,9 +65,13 @@ import com.example.littlelemon.R
 import com.example.littlelemon.data.Categories
 import com.example.littlelemon.data.MenuItemEntity
 import com.example.littlelemon.data.MenuViewModel
+<<<<<<< HEAD
 import com.example.littlelemon.navigation.BottomBar
 import com.example.littlelemon.navigation.MenuItemDetails
 import com.example.littlelemon.navigation.TopBar
+=======
+import com.example.littlelemon.navigation.TopAppBar
+>>>>>>> 56d216785f4db1071ef8d8c11d968190a4c3ecd0
 
 @ExperimentalComposeUiApi
 @ExperimentalGlideComposeApi
@@ -72,6 +81,7 @@ import com.example.littlelemon.navigation.TopBar
 fun HomeScreen(navController:NavHostController)
 {
     Scaffold(
+<<<<<<< HEAD
         bottomBar = { BottomBar(navController = navController ) },
         topBar = { TopBar(navController = navController) }
     ) {
@@ -86,10 +96,27 @@ fun HomeScreen(navController:NavHostController)
 @Composable
 fun HomeScreenComponent(navController: NavHostController) {
     val context = LocalContext.current
+=======
+        topBar = { TopAppBar(navController = navController) }
+    ) {
+        Column(Modifier.padding(top = 70.dp)) {
+            Screen()
+        }
+    }
+}
+@ExperimentalGlideComposeApi
+@ExperimentalMaterial3Api
+@ExperimentalComposeUiApi
+@Composable
+fun Screen() {
+    var searchText by remember { mutableStateOf("") }
+    val keyboardController = LocalSoftwareKeyboardController.current
+>>>>>>> 56d216785f4db1071ef8d8c11d968190a4c3ecd0
     val viewModel: MenuViewModel = viewModel()
     val menuItemsDatabase = viewModel.getAllDatabaseMenuItems().observeAsState(emptyList()).value
     val categories = Categories
 
+<<<<<<< HEAD
     var selectedCategory by remember { mutableStateOf(categories.first()) }
 
     LaunchedEffect(Unit) {
@@ -188,8 +215,108 @@ fun HomeScreenComponent(navController: NavHostController) {
                         isSelected = selectedCategory == category,
                         onCategorySelected = { selectedCategory = category })
                 }
+=======
+    var selectedCategory by remember { mutableStateOf("") }
+
+    LaunchedEffect(Unit){
+        viewModel.fetchMenuDataIfNeeded()
+    }
+
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .background(color = Color(0XFF41544E))
+            .padding(8.dp),
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.Start
+    ) {
+        Text(
+            text = "Little lemon",
+            fontSize = 40.sp,
+            fontWeight = FontWeight.W800,
+            style = TextStyle(
+                shadow = Shadow(
+                    color = Color.Black,
+                    offset = Offset(8f, 8f),
+                    blurRadius = 5f
+                )
+            ),
+            fontFamily = FontFamily.Serif,
+            color = Color.Yellow,
+            modifier = Modifier.padding(start = 10.dp, top = 10.dp, bottom = 2.dp)
+        )
+        Text(
+            text = "Chicago",
+            fontSize = 25.sp,
+            fontWeight = FontWeight.W600,
+            fontFamily = FontFamily.Serif,
+            color = Color.White,
+            modifier = Modifier.padding(start = 10.dp, top = 2.dp, bottom = 5.dp)
+        )
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        )
+        {
+            Text(
+                text = stringResource(id = R.string.description),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.W500,
+                fontFamily = FontFamily.SansSerif,
+                color = Color.White,
+                modifier = Modifier
+                    .fillMaxWidth(0.6F)
+                    .padding(10.dp, end = 12.dp)
+            )
+            Image(
+                painter = painterResource(id = R.drawable.heroimage),
+                contentDescription = "Restaurant Image", contentScale = ContentScale.FillWidth,
+                modifier = Modifier
+                    .padding(bottom = 10.dp, end = 15.dp)
+                    .size(135.dp)
+                    .clip(RoundedCornerShape(15.dp))
+            )
+        }
+        OutlinedTextField(
+            singleLine = true,
+            value = searchText, onValueChange = { newText -> searchText = newText },
+            leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = "") },
+            placeholder = { Text(text = "Enter the search phrase")},
+            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(onDone = {keyboardController?.hide()}),
+            shape = RoundedCornerShape(20),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 20.dp, horizontal = 12.dp)
+                .background(Color.White, shape = RoundedCornerShape(20))
+        )
+    }
+
+    val filteredMenuItems = menuItemsDatabase.filter { item ->
+        (selectedCategory.isEmpty() || item.category == selectedCategory) &&
+                (searchText.isEmpty() || item.title.contains(searchText, ignoreCase = true))
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxHeight()
+            .background(Color.White)
+    ) {
+        Text(
+            text = "Order For Delivery!",
+            fontWeight = FontWeight.W800,
+            fontSize = 28.sp,
+            modifier = Modifier.padding(top = 16.dp, start = 8.dp, bottom = 10.dp)
+        )
+        LazyRow {
+            items(categories) { category ->
+                MenuCategory(category = category ,isSelected = selectedCategory == category, onCategorySelected = {selectedCategory = category})
+>>>>>>> 56d216785f4db1071ef8d8c11d968190a4c3ecd0
             }
 
+<<<<<<< HEAD
             val filteredMenuItems = if(selectedCategory == "menu"){
                 menuItemsDatabase
             }else{
@@ -207,6 +334,12 @@ fun HomeScreenComponent(navController: NavHostController) {
                 items(filteredMenuItems) {item ->
                     MenuDish(item,navController)
                 }
+=======
+        Divider(modifier = Modifier.padding(vertical = 18.dp, horizontal = 2.dp), color = Color.Gray, thickness = 1.dp)
+        LazyColumn{
+            items(filteredMenuItems) { item ->
+                MenuDish(item)
+>>>>>>> 56d216785f4db1071ef8d8c11d968190a4c3ecd0
             }
         }
     }
