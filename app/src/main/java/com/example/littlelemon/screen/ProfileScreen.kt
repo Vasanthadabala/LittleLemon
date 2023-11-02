@@ -1,24 +1,28 @@
 package com.example.littlelemon.screen
 
-import android.annotation.SuppressLint
 import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.LocalTextStyle
-import androidx.compose.material.MaterialTheme.colors
-import androidx.compose.material.TextFieldDefaults
+<<<<<<< HEAD
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+=======
+>>>>>>> 56d216785f4db1071ef8d8c11d968190a4c3ecd0
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,35 +30,40 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.littlelemon.R
-import com.example.littlelemon.navigation.BottomBar
+<<<<<<< HEAD
 import com.example.littlelemon.navigation.Login
+=======
+import com.example.littlelemon.navigation.Signup
+>>>>>>> 56d216785f4db1071ef8d8c11d968190a4c3ecd0
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @ExperimentalMaterial3Api
 @Composable
 fun ProfileScreen(navController: NavHostController) {
+<<<<<<< HEAD
     Scaffold(
-        bottomBar = { BottomBar(navController = navController) }
+        topBar = {ProfileTopBar(navController = navController)},
     ) {
-        InfoScreen(navController = navController)
+        ProfileScreenComponent(navController = navController)
     }
 }
 
 @ExperimentalMaterial3Api
 @Composable
-fun InfoScreen(navController: NavHostController) {
+fun ProfileScreenComponent(navController: NavHostController) {
+=======
+>>>>>>> 56d216785f4db1071ef8d8c11d968190a4c3ecd0
 
     val context = LocalContext.current
     val sharedPrefernces = context.getSharedPreferences("MY_PRE", Context.MODE_PRIVATE)
-    val savedName = sharedPrefernces.getString("UserName", "Default Name for Login")?:"John"
-    val savedMail = sharedPrefernces.getString("Mail", "")?:"John@mail.com"
+    val firstName = sharedPrefernces.getString("FirstName","")
+    val lastName = sharedPrefernces.getString("LastName", "")
+    val savedMail = sharedPrefernces.getString("Mail", "")
     val editor = sharedPrefernces.edit()
     Column(
         Modifier
@@ -68,7 +77,7 @@ fun InfoScreen(navController: NavHostController) {
             contentScale = ContentScale.Fit,
             modifier = Modifier
                 .fillMaxWidth()
-                .size(80.dp)
+                .size(90.dp)
                 .padding(vertical = 20.dp, horizontal = 25.dp)
                 .align(Alignment.CenterHorizontally)
         )
@@ -77,18 +86,18 @@ fun InfoScreen(navController: NavHostController) {
             textAlign = TextAlign.Start,
             fontSize = 28.sp,
             fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(vertical = 10.dp, horizontal = 10.dp )
+            modifier = Modifier.padding(top = 80.dp, bottom = 40.dp, start = 12.dp)
         )
         Column {
             Text(
-                text = "Username",
+                text = "First name",
                 textAlign = TextAlign.Start,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.W400,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.W500,
                 modifier = Modifier.padding(top = 10.dp, start = 14.dp)
             )
             OutlinedTextField(
-                value = savedName,
+                value = firstName.toString(),
                 onValueChange = {},
                 readOnly = true,
                 enabled = false,
@@ -104,14 +113,37 @@ fun InfoScreen(navController: NavHostController) {
                 shape = RoundedCornerShape(15)
             )
             Text(
-                text = "Email",
+                text = "Last name",
                 textAlign = TextAlign.Start,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.W400,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.W500,
                 modifier = Modifier.padding(top = 10.dp, start = 14.dp)
             )
             OutlinedTextField(
-                value = savedMail,
+                value = lastName.toString(),
+                onValueChange = {},
+                readOnly = true,
+                enabled = false,
+                textStyle = LocalTextStyle.current.copy(
+                    fontWeight = FontWeight.W500,
+                    fontSize = 18.sp,
+                    color = Color.Gray
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White)
+                    .padding(vertical = 12.dp, horizontal = 14.dp),
+                shape = RoundedCornerShape(15),
+            )
+            Text(
+                text = "Email",
+                textAlign = TextAlign.Start,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.W500,
+                modifier = Modifier.padding(top = 10.dp, start = 14.dp)
+            )
+            OutlinedTextField(
+                value = savedMail.toString(),
                 onValueChange = {},
                 readOnly = true,
                 enabled = false,
@@ -131,21 +163,20 @@ fun InfoScreen(navController: NavHostController) {
             onClick = {
                 clearSharedPreferences(context)
                 editor.putBoolean("isLoggedin",false).apply()
-                navController.navigate(Login.route){
+                navController.navigate(Signup.route){
                     popUpTo(navController.graph.id){
                         inclusive = true
                     }
                 }
             },
             elevation = ButtonDefaults.buttonElevation(
-                defaultElevation = 5.dp,
-                pressedElevation = 10.dp,
-                disabledElevation = 0.dp
+                defaultElevation = 1.dp,
+                pressedElevation = 5.dp,
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 25.dp),
-            shape = RoundedCornerShape(32),
+                .padding(top = 200.dp, bottom = 20.dp, start = 14.dp, end = 14.dp),
+            shape = RoundedCornerShape(24),
             colors = ButtonDefaults.buttonColors(Color.Yellow)
         ) {
             Text(
@@ -156,10 +187,27 @@ fun InfoScreen(navController: NavHostController) {
         }
     }
 }
+
 fun clearSharedPreferences(context: Context)
 {
     val sharedPrefernces = context.getSharedPreferences("MY_PRE", Context.MODE_PRIVATE)
     val editor = sharedPrefernces.edit()
     editor.clear()
     editor.apply()
+}
+
+@ExperimentalMaterial3Api
+@Composable
+fun ProfileTopBar(navController: NavHostController) {
+    TopAppBar(
+        title = { Text(text = "Profile", fontWeight = FontWeight.W500) },
+        navigationIcon = {
+            IconButton(onClick = { navController.navigateUp() }) {
+                Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+            }
+        },
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = Color.White
+        )
+    )
 }

@@ -1,94 +1,102 @@
 package com.example.littlelemon.navigation
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.littlelemon.R
 
 @Composable
 fun BottomBar(navController: NavHostController) {
-    val selectedIndex = remember { mutableStateOf(0) }
+    var selectedItemIndex by rememberSaveable {mutableStateOf(0)}
+
+    val items = listOf(
+        BottomNavigationItem(
+            title = "Home",
+            selectedIcon = R.drawable.home,
+            route = Home.route
+        ),
+        BottomNavigationItem(
+            title = "Search",
+            selectedIcon = R.drawable.search,
+            route = Search.route
+        ),
+        BottomNavigationItem(
+            title = "Settings",
+            selectedIcon = R.drawable.settings,
+            route = Cart.route
+        ),
+        BottomNavigationItem(
+            title = "Cart",
+            selectedIcon = R.drawable.cart,
+            route = Cart.route
+        ),
+    )
+
     Card(
-        elevation = CardDefaults.cardElevation(5.dp),
-        shape = RoundedCornerShape(0.dp),
-        modifier = Modifier.fillMaxWidth().
-        padding(0.dp)
+        elevation = CardDefaults.elevatedCardElevation(20.dp),
+        shape = RoundedCornerShape(0.dp)
     ) {
-        BottomNavigation(
-            modifier = Modifier.fillMaxWidth().height(60.dp),
-            backgroundColor = Color.White
+        NavigationBar(
+            tonalElevation = 5.dp,
+            containerColor = Color.White
         ) {
-            BottomNavigationItem(
-                selected = (selectedIndex.value == 0),
-                onClick = {
-                    navController.navigate(Home.route) {
-                        popUpTo(Home.route)
-                        launchSingleTop = true
+            items.forEachIndexed { index, item ->
+                NavigationBarItem(
+                    selected = selectedItemIndex == index,
+                    onClick = {
+                        selectedItemIndex = index
+                        navController.navigate(item.route){
+                            popUpTo(item.route){
+                                inclusive = true
+                            }
+                            launchSingleTop = true
+                        }
+                    },
+                    label = {
+                        Text(
+                            text = item.title,
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Bold ,
+                            color = Color(0xff0C2D48))
+                    },
+                    alwaysShowLabel = true,
+                    icon = {
+                        Box(
+                            modifier = Modifier.size(28.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Image(
+                                painterResource(id = item.selectedIcon),
+                                contentDescription = item.title
+                            )
+                        }
                     }
-                },
-                icon = {
-                    Icon(
-                        imageVector = Icons.Default.Home,
-                        contentDescription = "Home"
-                    )
-                }
-            )
-            BottomNavigationItem(
-                selected = (selectedIndex.value == 1),
-                onClick = {navController.navigate(Search.route)
-                {
-                    popUpTo(Home.route)
-                    launchSingleTop = true
-                }},
-                icon = {
-                    Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = "Search"
-                    )
-                }
-            )
-            BottomNavigationItem(
-                selected = (selectedIndex.value == 2),
-                onClick = { },
-                icon = {
-                    Icon(
-                        imageVector = Icons.Default.Favorite,
-                        contentDescription = "Favourite"
-                    )
-                }
-            )
-            BottomNavigationItem(
-                selected = (selectedIndex.value == 3),
-                onClick = {
-                    navController.navigate(Profile.route) {
-                        popUpTo(Home.route)
-                        launchSingleTop = true
-                    }
-                },
-                icon = {
-                    Icon(
-                        imageVector = Icons.Default.Person,
-                        contentDescription = "Profile"
-                    )
-                }
-            )
+                )
+            }
         }
     }
 }
+data class BottomNavigationItem(
+    val title: String,
+    val selectedIcon: Int,
+    val route:String
+)
