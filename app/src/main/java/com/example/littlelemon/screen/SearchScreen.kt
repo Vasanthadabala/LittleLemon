@@ -25,6 +25,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -37,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -52,12 +54,12 @@ import com.example.littlelemon.data.MenuItemEntity
 import com.example.littlelemon.data.MenuViewModel
 import com.example.littlelemon.navigation.Home
 
-
 @ExperimentalGlideComposeApi
-@ExperimentalComposeUiApi
 @ExperimentalMaterial3Api
+@ExperimentalComposeUiApi
 @Composable
 fun SearchScreen(navController:NavHostController){
+    val context = LocalContext.current
 
     var searchText by remember { mutableStateOf(TextFieldValue(""))}
     val keyboardController = LocalSoftwareKeyboardController.current

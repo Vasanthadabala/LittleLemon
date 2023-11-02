@@ -163,10 +163,19 @@ fun clearSharedPreferences(context: Context)
 @Composable
 fun ProfileTopBar(navController: NavHostController) {
     TopAppBar(
-        title = { Text(text = "Profile", fontWeight = FontWeight.W500) },
+        title = {
+            Text(text = "Profile",
+                fontWeight = FontWeight.Bold,
+                fontSize = 24.sp
+            )},
         navigationIcon = {
-            IconButton(onClick = { navController.navigateUp() }) {
-                Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+            IconButton(
+                onClick = { navController.navigateUp() }) {
+                Icon(
+                    Icons.Default.ArrowBack,
+                    contentDescription = "Back",
+                    modifier = Modifier.size(26.dp)
+                )
             }
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
