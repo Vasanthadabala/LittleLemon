@@ -4,21 +4,24 @@ import android.annotation.SuppressLint
 import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.LocalTextStyle
-import androidx.compose.material.MaterialTheme.colors
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,14 +29,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.littlelemon.R
-import com.example.littlelemon.navigation.BottomBar
 import com.example.littlelemon.navigation.Login
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -41,15 +42,15 @@ import com.example.littlelemon.navigation.Login
 @Composable
 fun ProfileScreen(navController: NavHostController) {
     Scaffold(
-        bottomBar = { BottomBar(navController = navController) }
+        topBar = {ProfileTopBar(navController = navController)},
     ) {
-        InfoScreen(navController = navController)
+        ProfileScreenComponent(navController = navController)
     }
 }
 
 @ExperimentalMaterial3Api
 @Composable
-fun InfoScreen(navController: NavHostController) {
+fun ProfileScreenComponent(navController: NavHostController) {
 
     val context = LocalContext.current
     val sharedPrefernces = context.getSharedPreferences("MY_PRE", Context.MODE_PRIVATE)
@@ -156,10 +157,27 @@ fun InfoScreen(navController: NavHostController) {
         }
     }
 }
+
 fun clearSharedPreferences(context: Context)
 {
     val sharedPrefernces = context.getSharedPreferences("MY_PRE", Context.MODE_PRIVATE)
     val editor = sharedPrefernces.edit()
     editor.clear()
     editor.apply()
+}
+
+@ExperimentalMaterial3Api
+@Composable
+fun ProfileTopBar(navController: NavHostController) {
+    TopAppBar(
+        title = { Text(text = "Profile", fontWeight = FontWeight.W500) },
+        navigationIcon = {
+            IconButton(onClick = { navController.navigateUp() }) {
+                Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+            }
+        },
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = Color.White
+        )
+    )
 }

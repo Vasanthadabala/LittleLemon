@@ -19,3 +19,13 @@ object Profile: Destinations {
 object Search: Destinations {
     override val route="Search"
 }
+object Cart: Destinations {
+    override val route="Cart"
+}
+object Settings: Destinations {
+    override val route="Settings"
+}
+object MenuItemDetails: Destinations {
+    override val route="MenuItemDetails"
+    const val dishID = "dishId"
+}

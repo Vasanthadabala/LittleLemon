@@ -61,4 +61,8 @@ class MenuViewModel(application: Application):AndroidViewModel(application) {
     {
         return database.menuDao().getAllMenuItems()
     }
+
+    fun getItemById(itemId: Int): LiveData<MenuItemEntity> {
+        return database.menuDao().getMenuItemBy(itemId)
+    }
 }

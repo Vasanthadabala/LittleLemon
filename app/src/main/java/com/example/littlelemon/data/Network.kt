@@ -24,5 +24,6 @@ data class MenuItemNetwork(
         description = description,
         price = price,
         image = image,
-        category = category)
+        category = category
+    )
 }
