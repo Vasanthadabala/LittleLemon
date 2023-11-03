@@ -51,11 +51,11 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.example.littlelemon.data.MenuItemEntity
 import com.example.littlelemon.data.MenuViewModel
 import com.example.littlelemon.navigation.Home
-
+import com.example.littlelemon.navigation.MenuItemDetails
 
 @ExperimentalGlideComposeApi
-@ExperimentalComposeUiApi
 @ExperimentalMaterial3Api
+@ExperimentalComposeUiApi
 @Composable
 fun SearchScreen(navController:NavHostController){
 
@@ -63,7 +63,7 @@ fun SearchScreen(navController:NavHostController){
     val keyboardController = LocalSoftwareKeyboardController.current
 
     val searchViewModel: MenuViewModel = viewModel()
-    val menuItemsDatabase = searchViewModel.getAllDatabaseMenuItems().observeAsState(emptyList()).value
+    val menuItemsDatabase by searchViewModel.getAllDatabaseMenuItems().observeAsState(emptyList())
 
     LaunchedEffect(Unit) {
         searchViewModel.fetchMenuDataIfNeeded()
@@ -120,7 +120,7 @@ fun SearchScreen(navController:NavHostController){
         ) {
             if (searchText.text.isNotEmpty()) {
                 items(filteredMenuItems) { item ->
-                    SearchMenuDish(item)
+                    SearchMenuDish(item,navController)
                 }
             }
         }
@@ -129,7 +129,7 @@ fun SearchScreen(navController:NavHostController){
 
 @ExperimentalGlideComposeApi
 @Composable
-fun SearchMenuDish(dish: MenuItemEntity)
+fun SearchMenuDish(dish: MenuItemEntity,navController: NavHostController)
 {
     Card(
         elevation = CardDefaults.cardElevation(1.dp),
@@ -138,6 +138,9 @@ fun SearchMenuDish(dish: MenuItemEntity)
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 1.dp)
+            .clickable{
+                navController.navigate(MenuItemDetails.route+"/${dish.id}")
+            }
     ) {
         Row(
             modifier = Modifier.padding(8.dp)

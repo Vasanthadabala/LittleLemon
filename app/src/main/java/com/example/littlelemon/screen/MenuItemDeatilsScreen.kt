@@ -22,8 +22,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -49,7 +51,9 @@ fun MenuItemDetilsScreen(navController:NavHostController, id: Int){
                 title = { Text(text = "Item Details", fontWeight = FontWeight.Bold)},
                 navigationIcon = {
                     IconButton(
-                        onClick = { navController.popBackStack()}
+                        onClick = {
+                            navController.popBackStack()
+                        }
                     ){
                         Icon(
                             Icons.Default.ArrowBack,
@@ -68,8 +72,14 @@ fun MenuItemDetilsScreen(navController:NavHostController, id: Int){
 @Composable
 fun MenuItemDetilsScreenComponent(id:Int){
 
-    val MenuItemDetailsviewModel:MenuViewModel = viewModel()
-    val selectedDish = MenuItemDetailsviewModel.getItemById(id).value
+    val menuItemDetailsviewModel:MenuViewModel = viewModel()
+    val selectedDish by menuItemDetailsviewModel.getItemById(id).observeAsState()
+    //retrives the data and observes the data to update if needed
+
+    LaunchedEffect(Unit) {
+        menuItemDetailsviewModel.fetchMenuDataIfNeeded()
+    }
+
     
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
