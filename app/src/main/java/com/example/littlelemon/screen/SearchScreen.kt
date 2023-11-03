@@ -25,7 +25,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -38,7 +37,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -53,19 +51,19 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.example.littlelemon.data.MenuItemEntity
 import com.example.littlelemon.data.MenuViewModel
 import com.example.littlelemon.navigation.Home
+import com.example.littlelemon.navigation.MenuItemDetails
 
 @ExperimentalGlideComposeApi
 @ExperimentalMaterial3Api
 @ExperimentalComposeUiApi
 @Composable
 fun SearchScreen(navController:NavHostController){
-    val context = LocalContext.current
 
     var searchText by remember { mutableStateOf(TextFieldValue(""))}
     val keyboardController = LocalSoftwareKeyboardController.current
 
     val searchViewModel: MenuViewModel = viewModel()
-    val menuItemsDatabase = searchViewModel.getAllDatabaseMenuItems().observeAsState(emptyList()).value
+    val menuItemsDatabase by searchViewModel.getAllDatabaseMenuItems().observeAsState(emptyList())
 
     LaunchedEffect(Unit) {
         searchViewModel.fetchMenuDataIfNeeded()
@@ -122,7 +120,7 @@ fun SearchScreen(navController:NavHostController){
         ) {
             if (searchText.text.isNotEmpty()) {
                 items(filteredMenuItems) { item ->
-                    SearchMenuDish(item)
+                    SearchMenuDish(item,navController)
                 }
             }
         }
@@ -131,7 +129,7 @@ fun SearchScreen(navController:NavHostController){
 
 @ExperimentalGlideComposeApi
 @Composable
-fun SearchMenuDish(dish: MenuItemEntity)
+fun SearchMenuDish(dish: MenuItemEntity,navController: NavHostController)
 {
     Card(
         elevation = CardDefaults.cardElevation(1.dp),
@@ -140,6 +138,9 @@ fun SearchMenuDish(dish: MenuItemEntity)
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 1.dp)
+            .clickable{
+                navController.navigate(MenuItemDetails.route+"/${dish.id}")
+            }
     ) {
         Row(
             modifier = Modifier.padding(8.dp)

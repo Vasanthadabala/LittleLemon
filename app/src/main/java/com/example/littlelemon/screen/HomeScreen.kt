@@ -237,7 +237,9 @@ fun MenuDish(dish: MenuItemEntity,navController: NavHostController)
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 1.dp)
-            .clickable{navController.navigate(MenuItemDetails.route+"/${dish.id}")}
+            .clickable{
+                navController.navigate(MenuItemDetails.route+"/${dish.id}")
+            }
     ) {
         Row(modifier = Modifier.padding(8.dp)) {
             Column{

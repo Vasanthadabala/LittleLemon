@@ -18,10 +18,13 @@ abstract class AppDataBase:RoomDatabase()
 interface MenuDao{
     @Query("SELECT * FROM menu_items")
     fun getAllMenuItems():LiveData<List<MenuItemEntity>>
+
     @Query("SELECT * FROM menu_items WHERE id = :itemId")
     fun getMenuItemBy(itemId: Int): LiveData<MenuItemEntity>
+
     @Insert
     fun insertAll(menuItems: List<MenuItemEntity>)
+
     @Query("SELECT (SELECT COUNT(*) FROM menu_items) == 0")
     fun isEmpty(): Boolean
 }
