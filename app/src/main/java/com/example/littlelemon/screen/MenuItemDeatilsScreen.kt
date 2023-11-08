@@ -2,6 +2,7 @@ package com.example.littlelemon.screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,6 +27,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,7 +42,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.example.littlelemon.data.CartItem
+import com.example.littlelemon.data.CartViewModel
 import com.example.littlelemon.data.MenuViewModel
+import com.example.littlelemon.navigation.Cart
 
 @ExperimentalGlideComposeApi
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -64,67 +71,45 @@ fun MenuItemDetilsScreen(navController:NavHostController, id: Int){
             )
         }
     ){
-        MenuItemDetilsScreenComponent(id)
+        MenuItemDetilsScreenComponent(id,navController)
     }
 }
 
 @ExperimentalGlideComposeApi
 @Composable
-fun MenuItemDetilsScreenComponent(id:Int){
+fun MenuItemDetilsScreenComponent(id:Int,navController: NavHostController ) {
+    val cartViewModel : CartViewModel = viewModel()
 
-    val menuItemDetailsviewModel:MenuViewModel = viewModel()
+    val menuItemDetailsviewModel: MenuViewModel = viewModel()
     val selectedDish by menuItemDetailsviewModel.getItemById(id).observeAsState()
+    var counter by remember { mutableStateOf(0) }
     //retrives the data and observes the data to update if needed
 
     LaunchedEffect(Unit) {
         menuItemDetailsviewModel.fetchMenuDataIfNeeded()
     }
 
-    
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .padding(top = 80.dp, start = 10.dp, end = 10.dp, bottom = 10.dp)
+            .padding(top = 100.dp, start = 10.dp, end = 10.dp, bottom = 10.dp)
             .fillMaxSize()
-    ){
+    ) {
         Card(
             elevation = CardDefaults.cardElevation(1.dp),
-            shape = RoundedCornerShape(0.dp),
+            shape = RoundedCornerShape(10.dp),
             colors = CardDefaults.cardColors(Color.White),
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            Row(modifier = Modifier.padding(8.dp)) {
-                Column {
-                    Text(
-                        text = selectedDish?.title ?: "Title",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.W800,
-                        modifier = Modifier.padding(5.dp)
-                    )
-                    Text(
-                        text = selectedDish?.description ?: "Description",
-                        color = Color.Gray,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W700,
-                        modifier = Modifier
-                            .padding(5.dp)
-                            .fillMaxWidth(.75f)
-                    )
-                    Text(
-                        text = "$ ${selectedDish?.price ?: "price"}",
-                        fontWeight = FontWeight.W900,
-                        fontSize = 16.sp,
-                        color = Color.DarkGray,
-                        modifier = Modifier.padding(5.dp)
-                    )
-                }
+            Column {
                 Box(
                     modifier = Modifier
-                        .size(100.dp)
-                        .clip(RoundedCornerShape(10))
+                        .size(400.dp, 400.dp)
+                        .clip(RoundedCornerShape(0))
                         .background(Color.Transparent) // Ensures the rounded corners are visible
-                        .align(Alignment.CenterVertically)
+
                 ) {
                     GlideImage(
                         model = selectedDish?.image ?: "",
@@ -133,10 +118,68 @@ fun MenuItemDetilsScreenComponent(id:Int){
                         modifier = Modifier.fillMaxSize()
                     )
                 }
+                Text(
+                    text = selectedDish?.title ?: "Title",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    modifier = Modifier.padding(start = 10.dp, top = 8.dp)
+                )
+                Text(
+                    text = selectedDish?.description ?: "Description",
+                    color = Color.Gray,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(start = 10.dp,top = 8.dp)
+                )
+                Text(
+                    text = "$ ${selectedDish?.price ?: "price"}",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    color = Color.DarkGray,
+                    modifier = Modifier.padding(start = 10.dp,top = 8.dp)
+                )
             }
         }
+        Row(
+            modifier = Modifier.padding(top = 20.dp)
+        ) {
+            Text(
+                text = "-",
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .padding(5.dp)
+                    .clickable { if (counter != 0) counter-- }
+            )
+            Text(
+                text = counter.toString(),
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(5.dp)
+            )
+            Text(
+                text = "+",
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .padding(5.dp)
+                    .clickable { counter++ }
+            )
+        }
         Button(
-            onClick = { /*TODO*/ },
+            onClick = {
+                val selectedItem = selectedDish?.let {
+                    CartItem(
+                        it.id, it.title, it.price.toDouble(), counter
+                    )
+                }
+                if (selectedItem != null) {
+                    cartViewModel.addItemToCart(selectedItem)
+                }
+                navController.navigate(Cart.route)
+
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 20.dp),
@@ -151,4 +194,5 @@ fun MenuItemDetilsScreenComponent(id:Int){
             )
         }
     }
+
 }

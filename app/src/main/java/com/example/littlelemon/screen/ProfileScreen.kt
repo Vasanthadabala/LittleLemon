@@ -2,7 +2,6 @@ package com.example.littlelemon.screen
 
 import android.annotation.SuppressLint
 import android.content.Context
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,20 +22,16 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.littlelemon.R
 import com.example.littlelemon.navigation.Signin
-import com.example.littlelemon.navigation.Signup
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @ExperimentalMaterial3Api
 @Composable
@@ -54,12 +49,10 @@ fun ProfileScreenComponent(navController: NavHostController) {
 
     val context = LocalContext.current
     val sharedPrefernces = context.getSharedPreferences("MY_PRE", Context.MODE_PRIVATE)
-    val firstName = sharedPrefernces.getString("FirstName","")
-    val lastName = sharedPrefernces.getString("LastName", "")
+
+    val userName = sharedPrefernces.getString("UserName","")?:"Guest"
     val savedMail = sharedPrefernces.getString("Mail", "")
-    val userName = sharedPrefernces.getString("UserName","")
-    val isSignedIn =sharedPrefernces.getBoolean("isSignedin",false)
-    val fullName = firstName+lastName
+
     val editor = sharedPrefernces.edit()
     Column(
         Modifier
@@ -83,7 +76,7 @@ fun ProfileScreenComponent(navController: NavHostController) {
                 modifier = Modifier.padding(top = 10.dp, start = 14.dp)
             )
             OutlinedTextField(
-                value = if(isSignedIn) userName?:"" else "$firstName $lastName",
+                value = userName,
                 onValueChange = {},
                 readOnly = true,
                 enabled = false,

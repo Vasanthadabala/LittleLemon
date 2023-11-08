@@ -77,19 +77,19 @@ fun SearchScreen(navController:NavHostController){
                 modifier = Modifier
                     .padding(top = 32.dp, start = 10.dp, end = 8.dp)
                     .size(30.dp)
-                    .clickable { navController.navigate(Home.route) }
+                    .clickable { navController.navigateUp() }
             )
             OutlinedTextField(
                 singleLine = true,
                 value = searchText, onValueChange = { newText -> searchText = newText },
                 leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = "") },
-                placeholder = { Text(text = "Search") },
+                placeholder = { Text(text = "Enter the search phrase") },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
-                shape = RoundedCornerShape(40),
+                shape = RoundedCornerShape(25),
                 modifier = Modifier
                     .fillMaxWidth(.75f)
-                    .padding(start = 5.dp, top = 20.dp, end = 5.dp, bottom = 20.dp)
+                    .padding(vertical = 20.dp, horizontal = 12.dp)
                     .size(5.dp, 52.dp),
                 textStyle = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.W400)
             )
