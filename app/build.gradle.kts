@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("org.jetbrains.kotlin.plugin.serialization")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -57,6 +58,7 @@ dependencies {
     implementation("io.ktor:ktor-client-content-negotiation:2.1.3")
     implementation("io.ktor:ktor-serialization-kotlinx-json:2.1.3")
     implementation("androidx.room:room-runtime:2.5.2")
+    implementation("com.google.firebase:firebase-auth:22.2.0")
     kapt("androidx.room:room-compiler:2.5.2")
     implementation("androidx.compose.runtime:runtime-livedata:1.3.2")
     implementation("androidx.room:room-ktx:2.5.2")

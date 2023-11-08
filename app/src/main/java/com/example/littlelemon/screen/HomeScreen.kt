@@ -205,7 +205,7 @@ fun HomeScreenComponent(navController: NavHostController) {
             Divider(modifier = Modifier.padding(8.dp), color = Color.Gray, thickness = 1.dp)
             LazyColumn(
                 modifier = Modifier
-                    .fillMaxHeight(.8f)
+                    .fillMaxHeight(.72f)
                     .padding(top = 5.dp, bottom = 5.dp)
             ){
                 items(filteredMenuItems) {item ->

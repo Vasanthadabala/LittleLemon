@@ -16,6 +16,7 @@ import com.example.littlelemon.screen.HomeScreen
 import com.example.littlelemon.screen.MenuItemDetilsScreen
 import com.example.littlelemon.screen.ProfileScreen
 import com.example.littlelemon.screen.SearchScreen
+import com.example.littlelemon.screen.SettingScreen
 import com.example.littlelemon.screen.SignInScreen
 import com.example.littlelemon.screen.SignUpScreen
 
@@ -47,6 +48,10 @@ fun MyNavigation(context: Context) {
         composable(Search.route)
         {
             SearchScreen(navController)
+        }
+        composable(Settings.route)
+        {
+            SettingScreen(navController)
         }
         composable(Cart.route)
         {

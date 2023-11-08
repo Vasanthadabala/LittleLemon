@@ -39,24 +39,29 @@ import com.example.littlelemon.R
 import com.example.littlelemon.navigation.Home
 import com.example.littlelemon.navigation.Signin
 import com.example.littlelemon.navigation.Signup
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 @Composable
 fun SignUpScreen(navController:NavHostController)
 {
-    var firstname by remember { mutableStateOf(TextFieldValue("")) }
-    var lastname by remember { mutableStateOf(TextFieldValue("")) }
+
+    var username by remember { mutableStateOf(TextFieldValue("")) }
     var email by remember { mutableStateOf(TextFieldValue("")) }
+    var password by remember { mutableStateOf(TextFieldValue("")) }
 
     val context= LocalContext.current
 
-    val firstName = firstname.text
-    val lastName = lastname.text
+    val name = username.text
     val mail = email.text
+
     val sharedPreferences = context.getSharedPreferences("MY_PRE", Context.MODE_PRIVATE)
     val editor=sharedPreferences.edit()
-    editor.putString("FirstName", firstName).apply()
-    editor.putString("LastName", lastName).apply()
+    editor.putString("UserName",name).apply()
     editor.putString("Mail",mail).apply()
+
+    val auth = Firebase.auth
 
     Column(Modifier.padding(0.dp)) {
         Image(painter = painterResource(id = R.drawable.logo),
@@ -80,35 +85,19 @@ fun SignUpScreen(navController:NavHostController)
             modifier= Modifier.padding(top = 60.dp, bottom = 40.dp, start = 12.dp)
         )
         Text(
-            text = "First name",
+            text = "Username",
             textAlign = TextAlign.Start,
             fontSize = 16.sp,
             fontWeight = FontWeight.W500,
             modifier = Modifier.padding(top = 10.dp, start = 14.dp)
         )
-        OutlinedTextField(value = firstname, onValueChange ={newText->firstname=newText},
+        OutlinedTextField(value = username, onValueChange = {newText->username=newText},
             singleLine = true,
-            placeholder = { Text(text = "Firstname") },
+            placeholder = { Text(text = "Username") },
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.White)
-                .padding(vertical = 12.dp, horizontal = 14.dp),
-            shape = RoundedCornerShape(16)
-        )
-        Text(
-            text = "Last name",
-            textAlign = TextAlign.Start,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.W500,
-            modifier = Modifier.padding(top = 10.dp, start = 14.dp)
-        )
-        OutlinedTextField(value = lastname , onValueChange ={newText->lastname=newText},
-            singleLine = true,
-            placeholder = { Text(text = "Lastname") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.White)
-                .padding(vertical = 12.dp, horizontal = 14.dp),
+                .padding(vertical = 12.dp, horizontal = 16.dp),
             shape = RoundedCornerShape(16)
         )
         Text(
@@ -127,19 +116,28 @@ fun SignUpScreen(navController:NavHostController)
                 .padding(vertical = 12.dp, horizontal = 16.dp),
             shape = RoundedCornerShape(16)
         )
+        Text(
+            text = "Password",
+            textAlign = TextAlign.Start,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.W500,
+            modifier = Modifier.padding(top = 10.dp, start = 14.dp)
+        )
+        OutlinedTextField(value = password , onValueChange ={newText->password=newText},
+            singleLine = true,
+            placeholder = { Text(text = "Password") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.White)
+                .padding(vertical = 12.dp, horizontal = 14.dp),
+            shape = RoundedCornerShape(16)
+        )
         Button(onClick = {
-            if (firstname.text.isBlank()|| lastname.text.isBlank() || email.text.isBlank())
+            if (username.text.isBlank()|| password.text.isBlank()|| email.text.isBlank())
             {
                 Toast.makeText(context, "Registration unsuccessful. Please enter all data", Toast.LENGTH_SHORT).show()
             }else {
-                Toast.makeText(context, "Registration successful", Toast.LENGTH_SHORT).show()
-                editor.putBoolean("isSignedup",true).apply()
-                navController.navigate(Home.route)
-                {
-                    popUpTo(navController.graph.id){
-                        inclusive = true
-                    }
-                }
+                signUpWithEmailAndPassword(auth,email.text, password.text, navController, context)
             }
         },
             elevation = ButtonDefaults.buttonElevation(
@@ -174,4 +172,31 @@ fun SignUpScreen(navController:NavHostController)
 
     }
 
+}
+
+private fun signUpWithEmailAndPassword(
+    auth: FirebaseAuth,
+    email: String,
+    password:String,
+    navController: NavHostController,
+    context: Context
+) {
+    val sharedPreferences = context.getSharedPreferences("MY_PRE", Context.MODE_PRIVATE)
+    val editor=sharedPreferences.edit()
+
+    auth.createUserWithEmailAndPassword(email, password)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Toast.makeText(context, "Registration successful", Toast.LENGTH_SHORT).show()
+                editor.putBoolean("isSignedin",true).apply()
+                navController.navigate(Home.route)
+                {
+                    popUpTo(navController.graph.id){
+                        inclusive = true
+                    }
+                }
+            } else {
+                Toast.makeText(context, "Registration failed.", Toast.LENGTH_SHORT).show()
+            }
+        }
 }

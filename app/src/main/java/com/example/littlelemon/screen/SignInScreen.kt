@@ -36,21 +36,26 @@ import androidx.navigation.NavHostController
 import com.example.littlelemon.R
 import com.example.littlelemon.navigation.Home
 import com.example.littlelemon.navigation.Signup
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 @ExperimentalMaterial3Api
 @Composable
 fun SignInScreen(navController : NavHostController){
     val context= LocalContext.current
 
-    var userName by remember { mutableStateOf(TextFieldValue("")) }
-    var email by remember { mutableStateOf(TextFieldValue("")) }
 
-    val username = userName.text
+    var email by remember { mutableStateOf(TextFieldValue("")) }
+    var password by remember { mutableStateOf(TextFieldValue("")) }
+
     val mail = email.text
+
+    val auth = Firebase.auth
 
     val sharedPreferences = context.getSharedPreferences("MY_PRE", Context.MODE_PRIVATE)
     val editor=sharedPreferences.edit()
-    editor.putString("UserName", username).apply()
+
     editor.putString("Mail",mail).apply()
 
     Column(Modifier.padding(0.dp)) {
@@ -75,15 +80,15 @@ fun SignInScreen(navController : NavHostController){
             modifier= Modifier.padding(top = 60.dp, bottom = 40.dp, start = 12.dp)
         )
         Text(
-            text = "User name",
+            text = "Email",
             textAlign = TextAlign.Start,
             fontSize = 16.sp,
             fontWeight = FontWeight.W500,
             modifier = Modifier.padding(top = 10.dp, start = 14.dp)
         )
-        OutlinedTextField(value = userName, onValueChange ={newText->userName=newText},
+        OutlinedTextField(value = email, onValueChange ={newText->email=newText},
             singleLine = true,
-            placeholder = { Text(text = "UserName") },
+            placeholder = { Text(text = "Email") },
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.White)
@@ -91,15 +96,15 @@ fun SignInScreen(navController : NavHostController){
             shape = RoundedCornerShape(16)
         )
         Text(
-            text = "Email",
+            text = "Password",
             textAlign = TextAlign.Start,
             fontSize = 16.sp,
             fontWeight = FontWeight.W500,
             modifier = Modifier.padding(top = 10.dp, start = 14.dp)
         )
-        OutlinedTextField(value = email, onValueChange = {newText->email=newText},
+        OutlinedTextField(value = password, onValueChange = {newText->password=newText},
             singleLine = true,
-            placeholder = { Text(text = "Email") },
+            placeholder = { Text(text = "Password") },
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.White)
@@ -107,18 +112,11 @@ fun SignInScreen(navController : NavHostController){
             shape = RoundedCornerShape(16)
         )
         Button(onClick = {
-            if (userName.text.isBlank() || email.text.isBlank())
+            if (password.text.isBlank() || email.text.isBlank())
             {
                 Toast.makeText(context, "Signin Unsuccessful. Please enter all data", Toast.LENGTH_SHORT).show()
             }else {
-                Toast.makeText(context, "Signin successful", Toast.LENGTH_SHORT).show()
-                editor.putBoolean("isSignedin",true).apply()
-                navController.navigate(Home.route)
-                {
-                    popUpTo(navController.graph.id){
-                        inclusive = true
-                    }
-                }
+                signInWithEmailAndPassword(auth, email.text, password.text, navController, context)
             }
         },
             elevation = ButtonDefaults.buttonElevation(
@@ -152,4 +150,36 @@ fun SignInScreen(navController : NavHostController){
         }
 
     }
+}
+
+private fun signInWithEmailAndPassword(
+    auth: FirebaseAuth,
+    email: String,
+    password: String,
+    navController: NavHostController,
+    context:Context
+) {
+    val sharedPreferences = context.getSharedPreferences("MY_PRE", Context.MODE_PRIVATE)
+    val editor=sharedPreferences.edit()
+
+    auth.signInWithEmailAndPassword(email, password)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val user = auth.currentUser
+                Toast.makeText(context, "Signin successful", Toast.LENGTH_SHORT).show()
+                editor.putBoolean("isSignedin",true).apply()
+                navController.navigate(Home.route)
+                {
+                    popUpTo(navController.graph.id){
+                        inclusive = true
+                    }
+                }
+            } else {
+                Toast.makeText(
+                    context,
+                    "Authentication failed.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
 }
