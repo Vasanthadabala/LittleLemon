@@ -86,7 +86,7 @@ fun SearchScreen(navController:NavHostController){
                 placeholder = { Text(text = "Enter the search phrase") },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
-                shape = RoundedCornerShape(25),
+                shape = RoundedCornerShape(30),
                 modifier = Modifier
                     .fillMaxWidth(.75f)
                     .padding(vertical = 20.dp, horizontal = 12.dp)
