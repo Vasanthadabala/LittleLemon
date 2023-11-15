@@ -48,12 +48,12 @@ fun ProfileScreen(navController: NavHostController) {
 fun ProfileScreenComponent(navController: NavHostController) {
 
     val context = LocalContext.current
-    val sharedPrefernces = context.getSharedPreferences("MY_PRE", Context.MODE_PRIVATE)
+    val sharedPreferences = context.getSharedPreferences("MY_PRE", Context.MODE_PRIVATE)
 
-    val userName = sharedPrefernces.getString("UserName","")?:"Guest"
-    val savedMail = sharedPrefernces.getString("Mail", "")
+    val userName = sharedPreferences.getString("UserName","")?:"Guest User"
+    val savedMail = sharedPreferences.getString("Mail", "")
 
-    val editor = sharedPrefernces.edit()
+    val editor = sharedPreferences.edit()
     Column(
         Modifier
             .padding(0.dp)
@@ -146,8 +146,8 @@ fun ProfileScreenComponent(navController: NavHostController) {
 
 fun clearSharedPreferences(context: Context)
 {
-    val sharedPrefernces = context.getSharedPreferences("MY_PRE", Context.MODE_PRIVATE)
-    val editor = sharedPrefernces.edit()
+    val sharedPreferences = context.getSharedPreferences("MY_PRE", Context.MODE_PRIVATE)
+    val editor = sharedPreferences.edit()
     editor.clear()
     editor.apply()
 }

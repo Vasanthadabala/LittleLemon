@@ -162,8 +162,9 @@ fun SignUpScreen(navController:NavHostController)
                 modifier = Modifier.padding(start = 80.dp)
             )
             Text(
-                text = "Signin",
-                fontSize = 15.sp,
+                text = "SignIn",
+                fontSize = 16.sp,
+                color = Color.Black,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .padding(start = 10.dp, top = 2.dp)
