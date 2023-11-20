@@ -194,7 +194,7 @@ fun HomeScreenComponent(navController: NavHostController) {
                 }
             }
 
-            val filteredMenuItems = if(selectedCategory == "menu"){
+            val filteredMenuItems = if(selectedCategory == "Menu"){
                 menuItemsDatabase
             }else{
                 menuItemsDatabase.filter { item ->

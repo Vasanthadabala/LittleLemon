@@ -32,7 +32,9 @@ import com.example.littlelemon.data.CartItem
 import com.example.littlelemon.data.CartViewModel
 import com.example.littlelemon.navigation.BottomBar
 import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.ExperimentalComposeUiApi
 
+@ExperimentalComposeUiApi
 @ExperimentalGlideComposeApi
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @ExperimentalMaterial3Api

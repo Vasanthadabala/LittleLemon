@@ -2,7 +2,10 @@ package com.example.littlelemon.screen
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -22,6 +25,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -30,7 +37,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.littlelemon.navigation.Signin
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @ExperimentalMaterial3Api
@@ -39,13 +51,13 @@ fun ProfileScreen(navController: NavHostController) {
     Scaffold(
         topBar = {ProfileTopBar(navController = navController)},
     ) {
-        ProfileScreenComponent(navController = navController)
+        ProfileScreenComponent()
     }
 }
 
 @ExperimentalMaterial3Api
 @Composable
-fun ProfileScreenComponent(navController: NavHostController) {
+fun ProfileScreenComponent() {
 
     val context = LocalContext.current
     val sharedPreferences = context.getSharedPreferences("MY_PRE", Context.MODE_PRIVATE)
@@ -53,7 +65,29 @@ fun ProfileScreenComponent(navController: NavHostController) {
     val userName = sharedPreferences.getString("UserName","")?:"Guest User"
     val savedMail = sharedPreferences.getString("Mail", "")
 
-    val editor = sharedPreferences.edit()
+    val userId = Firebase.auth.currentUser?.uid
+    var firebaseUsername by remember { mutableStateOf(userName) }
+
+    var isEditMode by remember { mutableStateOf(false) }
+    var editedUsername by remember { mutableStateOf(firebaseUsername) }
+
+
+    userId?.let {
+        val usersRef = Firebase.database.getReference("users").child(it)
+        usersRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val usernameFromDatabase = snapshot.child("username").getValue(String::class.java)
+                if (usernameFromDatabase != null) {
+                    firebaseUsername = usernameFromDatabase
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("ProfileScreen", "Error reading from database: ${error.message}")
+            }
+        })
+    }
+
+
     Column(
         Modifier
             .padding(0.dp)
@@ -76,10 +110,13 @@ fun ProfileScreenComponent(navController: NavHostController) {
                 modifier = Modifier.padding(top = 10.dp, start = 14.dp)
             )
             OutlinedTextField(
-                value = userName,
-                onValueChange = {},
-                readOnly = true,
-                enabled = false,
+                value = if (isEditMode) editedUsername else firebaseUsername,
+                onValueChange = {
+                    editedUsername = it
+                },
+                readOnly = !isEditMode,
+                singleLine = true,
+                enabled = isEditMode,
                 textStyle = LocalTextStyle.current.copy(
                     fontWeight = FontWeight.W600,
                     fontSize = 18.sp,
@@ -117,12 +154,11 @@ fun ProfileScreenComponent(navController: NavHostController) {
         }
         Button(
             onClick = {
-                clearSharedPreferences(context)
-                editor.putBoolean("isLoggedin",false).apply()
-                navController.navigate(Signin.route){
-                    popUpTo(navController.graph.id){
-                        inclusive = true
-                    }
+                isEditMode = !isEditMode
+                if (!isEditMode) {
+                    // Save the edited username to Firebase
+                    saveUserInfoToDatabase(userId, editedUsername, savedMail.orEmpty())
+                    Toast.makeText(context, "Username Saved", Toast.LENGTH_SHORT).show()
                 }
             },
             elevation = ButtonDefaults.buttonElevation(
@@ -136,7 +172,9 @@ fun ProfileScreenComponent(navController: NavHostController) {
             colors = ButtonDefaults.buttonColors(Color.Yellow)
         ) {
             Text(
-                text = "Log out", textAlign = TextAlign.Center, fontSize = 24.sp,
+                text = if(isEditMode)"Save" else "Edit",
+                textAlign = TextAlign.Center,
+                fontSize = 24.sp,
                 color = Color.Black,
                 modifier = Modifier.padding(2.dp)
             )
@@ -144,13 +182,7 @@ fun ProfileScreenComponent(navController: NavHostController) {
     }
 }
 
-fun clearSharedPreferences(context: Context)
-{
-    val sharedPreferences = context.getSharedPreferences("MY_PRE", Context.MODE_PRIVATE)
-    val editor = sharedPreferences.edit()
-    editor.clear()
-    editor.apply()
-}
+
 
 @ExperimentalMaterial3Api
 @Composable
@@ -175,4 +207,15 @@ fun ProfileTopBar(navController: NavHostController) {
             containerColor = Color.White
         )
     )
+}
+
+private fun saveUserInfoToDatabase(userId: String?, username: String, email: String) {
+    val firedb = Firebase.database
+    val usersRef = firedb.getReference("users")
+
+    userId?.let {
+        val userRef = usersRef.child(it)
+        userRef.child("username").setValue(username)
+        userRef.child("email").setValue(email)
+    }
 }
