@@ -12,10 +12,11 @@ The "Little Lemon Food Ordering App" is the final project for the Meta ANDROID D
 - **UI:** Jetpack Compose
 - **Networking:** Ktor HttpClient
 - **Local Database:** Room Database
+- **Data Storage:** Firebase
 - **Local Data Storage:** SharedPreferences
 
 ## Third Party Libraries
-- **Image Loading:** Glide (https://bumptech.github.io/glide/)
+- **Image Loading:** Glide (https://bumptech.github.io/glide/) and Coil
 
 ## Users
 
