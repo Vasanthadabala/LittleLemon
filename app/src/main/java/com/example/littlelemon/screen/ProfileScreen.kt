@@ -2,17 +2,25 @@ package com.example.littlelemon.screen
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -29,7 +37,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -37,12 +47,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import coil.compose.rememberImagePainter
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @ExperimentalMaterial3Api
@@ -71,6 +83,8 @@ fun ProfileScreenComponent() {
     var isEditMode by remember { mutableStateOf(false) }
     var editedUsername by remember { mutableStateOf(firebaseUsername) }
 
+    var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+
 
     userId?.let {
         val usersRef = Firebase.database.getReference("users").child(it)
@@ -90,16 +104,28 @@ fun ProfileScreenComponent() {
 
     Column(
         Modifier
-            .padding(0.dp)
-            .fillMaxWidth()
+            .padding(5.dp)
+            .fillMaxSize()
     )
     {
         Text(
             text = "Profile Information",
             textAlign = TextAlign.Start,
-            fontSize = 28.sp,
-            fontWeight = FontWeight.SemiBold,
+            fontSize = 26.sp,
+            fontWeight = FontWeight.W600,
             modifier = Modifier.padding(top = 80.dp, bottom = 40.dp, start = 12.dp)
+        )
+        ImageSelector(
+            onImageSelected = { uri ->
+                selectedImageUri = uri
+                if (isEditMode) {
+                    // Upload the selected image to Firebase Storage
+                    userId?.let { uploadImageToFirebaseStorage(context, it, uri, savedMail.orEmpty(), firebaseUsername) }
+                }
+            },
+            onEditModeToggle = {
+                isEditMode = !isEditMode
+            }
         )
         Column {
             Text(
@@ -125,7 +151,8 @@ fun ProfileScreenComponent() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Color.White)
-                    .padding(vertical = 12.dp, horizontal = 14.dp),
+                    .padding(vertical = 12.dp, horizontal = 14.dp)
+                    .clickable {isEditMode = !isEditMode  },
                 shape = RoundedCornerShape(15)
             )
             Text(
@@ -154,12 +181,12 @@ fun ProfileScreenComponent() {
         }
         Button(
             onClick = {
-                isEditMode = !isEditMode
-                if (!isEditMode) {
+                if (isEditMode) {
                     // Save the edited username to Firebase
-                    saveUserInfoToDatabase(userId, editedUsername, savedMail.orEmpty())
-                    Toast.makeText(context, "Username Saved", Toast.LENGTH_SHORT).show()
+                    saveUserInfoToDatabase(userId, editedUsername, savedMail.orEmpty(),selectedImageUri?.toString().orEmpty())
+                    Toast.makeText(context, "User Information Saved", Toast.LENGTH_SHORT).show()
                 }
+                isEditMode = !isEditMode
             },
             elevation = ButtonDefaults.buttonElevation(
                 defaultElevation = 1.dp,
@@ -167,12 +194,12 @@ fun ProfileScreenComponent() {
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 200.dp, bottom = 20.dp, start = 14.dp, end = 14.dp),
+                .padding(top = 180.dp, bottom = 20.dp, start = 14.dp, end = 14.dp),
             shape = RoundedCornerShape(24),
             colors = ButtonDefaults.buttonColors(Color.Yellow)
         ) {
             Text(
-                text = if(isEditMode)"Save" else "Edit",
+                text = if(!isEditMode) "Edit" else "Save",
                 textAlign = TextAlign.Center,
                 fontSize = 24.sp,
                 color = Color.Black,
@@ -209,7 +236,7 @@ fun ProfileTopBar(navController: NavHostController) {
     )
 }
 
-private fun saveUserInfoToDatabase(userId: String?, username: String, email: String) {
+private fun saveUserInfoToDatabase(userId: String?, username: String, email: String,imageUrl: String) {
     val firedb = Firebase.database
     val usersRef = firedb.getReference("users")
 
@@ -217,5 +244,80 @@ private fun saveUserInfoToDatabase(userId: String?, username: String, email: Str
         val userRef = usersRef.child(it)
         userRef.child("username").setValue(username)
         userRef.child("email").setValue(email)
+        userRef.child("imageUrl").setValue(imageUrl)
+    }
+}
+
+private fun uploadImageToFirebaseStorage(context:Context,userId: String, imageUri: Uri,savedMail:String,firebaseUsername:String) {
+    var storageRef = Firebase.storage.reference
+    val profileImageRef = storageRef.child("profile_images/$userId.jpg")
+
+    profileImageRef.putFile(imageUri)
+        .addOnSuccessListener {
+            // Get the download URL and save it to the database
+            profileImageRef.downloadUrl.addOnSuccessListener { uri ->
+                // Call your function to save the image URL to the database
+                saveUserInfoToDatabase(userId, firebaseUsername, savedMail.orEmpty(), uri.toString())
+            }
+        }
+        .addOnFailureListener { exception ->
+            Log.e("ProfileScreen", "Image upload failed: ${exception.message}")
+            Toast.makeText(context, "Image upload failed", Toast.LENGTH_SHORT).show()
+        }
+}
+
+@Composable
+fun ImageSelector(onImageSelected: (Uri) -> Unit,onEditModeToggle: () -> Unit) {
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
+    val userId = Firebase.auth.currentUser?.uid
+
+    val getContent = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri ->
+        uri?.let {
+            onImageSelected(it)
+            imageUri = it
+        }
+    }
+
+
+    userId?.let { userId ->
+        val storageRef = Firebase.storage.reference.child("profile_images/$userId.jpg")
+        var imageUrl by remember { mutableStateOf<Uri?>(null) }
+
+        // Fetch the image URL
+        storageRef.downloadUrl.addOnSuccessListener {
+            imageUrl = it
+        }
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(5.dp)
+                .size(150.dp)
+                .clickable {
+                    // Open the image picker
+                    getContent.launch("image/*")
+                    onEditModeToggle()
+                }, contentAlignment = Alignment.Center
+        ) {
+            if (imageUrl != null) {
+                Image(
+                    painter = rememberImagePainter(imageUrl?.toString()),
+                    contentDescription = "Profile Picture",
+                    modifier = Modifier
+                        .size(140.dp)
+                        .clip(CircleShape)
+                )
+            } else {
+                Icon(
+                    imageVector = Icons.Default.AccountCircle,
+                    contentDescription = "Add Photo",
+                    modifier = Modifier
+                        .size(150.dp)
+                        .clip(CircleShape)
+                )
+            }
+        }
     }
 }

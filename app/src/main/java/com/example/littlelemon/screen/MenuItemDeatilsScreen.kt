@@ -55,7 +55,11 @@ fun MenuItemDetilsScreen(navController:NavHostController, id: Int){
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "Item Details", fontWeight = FontWeight.Bold)},
+                title = {
+                    Text(
+                        text = "Item Details",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 24.sp)},
                 navigationIcon = {
                     IconButton(
                         onClick = {
@@ -65,7 +69,8 @@ fun MenuItemDetilsScreen(navController:NavHostController, id: Int){
                         Icon(
                             Icons.Default.ArrowBack,
                             contentDescription = "Back",
-                            modifier = Modifier.size(30.dp))
+                            modifier = Modifier.size(30.dp)
+                        )
                     }
                 }
             )

@@ -45,6 +45,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -83,8 +84,8 @@ fun SearchScreen(navController:NavHostController){
                 imageVector = Icons.Default.ArrowBack,
                 contentDescription = "Back",
                 modifier = Modifier
-                    .padding(top = 32.dp, start = 10.dp, end = 8.dp)
-                    .size(30.dp)
+                    .padding(top = 34.dp, start = 10.dp, end = 10.dp)
+                    .size(32.dp)
                     .clickable { navController.navigateUp() }
             )
             OutlinedTextField(
@@ -100,19 +101,22 @@ fun SearchScreen(navController:NavHostController){
                 shape = RoundedCornerShape(30),
                 modifier = Modifier
                     .fillMaxWidth(.75f)
-                    .padding(vertical = 20.dp, horizontal = 12.dp)
-                    .size(5.dp, 52.dp)
+                    .padding(top = 20.dp, start = 5.dp, bottom = 20.dp)
                     .focusRequester(focusRequester),
-                textStyle = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.W400)
+                textStyle = TextStyle(
+                    fontSize = 19.sp,
+                    fontWeight = FontWeight.W500,
+                    textAlign = TextAlign.Start
+                )
             )
             Text(
-                text = "Cancel",
-                fontWeight = FontWeight.W700,
-                fontSize = 20.sp,
+                text = "Clear",
+                fontWeight = FontWeight.W600,
+                fontSize = 22.sp,
                 color = Color.DarkGray,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 35.dp, horizontal = 5.dp)
+                    .padding(top = 34.dp, start = 12.dp)
                     .clickable {
                         searchText = TextFieldValue("")
                         keyboardController?.hide()
