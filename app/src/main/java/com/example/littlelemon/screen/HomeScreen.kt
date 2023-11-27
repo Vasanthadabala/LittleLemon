@@ -3,6 +3,7 @@
 package com.example.littlelemon.screen
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -64,6 +65,9 @@ import com.example.littlelemon.data.MenuViewModel
 import com.example.littlelemon.navigation.BottomBar
 import com.example.littlelemon.navigation.MenuItemDetails
 import com.example.littlelemon.navigation.TopBar
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 
 @ExperimentalComposeUiApi
 @ExperimentalGlideComposeApi
@@ -95,6 +99,7 @@ fun HomeScreenComponent(navController: NavHostController) {
     val categories = Categories
 
     var selectedCategory by remember { mutableStateOf(categories.first()) }
+
 
     LaunchedEffect(Unit) {
         viewModel.fetchMenuDataIfNeeded()
@@ -194,7 +199,7 @@ fun HomeScreenComponent(navController: NavHostController) {
                 }
             }
 
-            val filteredMenuItems = if(selectedCategory == "menu"){
+            val filteredMenuItems = if(selectedCategory == "Menu"){
                 menuItemsDatabase
             }else{
                 menuItemsDatabase.filter { item ->

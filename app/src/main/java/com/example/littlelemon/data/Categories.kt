@@ -1,7 +1,7 @@
 package com.example.littlelemon.data
 
 val Categories = listOf<String>(
-    "menu",
+    "Menu",
     "starters",
     "desserts",
     "mains",

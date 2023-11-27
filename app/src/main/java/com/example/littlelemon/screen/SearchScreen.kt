@@ -35,13 +35,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -50,7 +54,6 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.littlelemon.data.MenuItemEntity
 import com.example.littlelemon.data.MenuViewModel
-import com.example.littlelemon.navigation.Home
 import com.example.littlelemon.navigation.MenuItemDetails
 
 @ExperimentalGlideComposeApi
@@ -62,11 +65,17 @@ fun SearchScreen(navController:NavHostController){
     var searchText by remember { mutableStateOf(TextFieldValue(""))}
     val keyboardController = LocalSoftwareKeyboardController.current
 
+    val focusManager = LocalFocusManager.current
+    val focusRequester = remember { FocusRequester() }
+
     val searchViewModel: MenuViewModel = viewModel()
     val menuItemsDatabase by searchViewModel.getAllDatabaseMenuItems().observeAsState(emptyList())
 
     LaunchedEffect(Unit) {
         searchViewModel.fetchMenuDataIfNeeded()
+        keyboardController?.show()
+        focusManager.clearFocus()
+        focusRequester.requestFocus()
     }
 
     Column {
@@ -75,32 +84,39 @@ fun SearchScreen(navController:NavHostController){
                 imageVector = Icons.Default.ArrowBack,
                 contentDescription = "Back",
                 modifier = Modifier
-                    .padding(top = 32.dp, start = 10.dp, end = 8.dp)
-                    .size(30.dp)
+                    .padding(top = 34.dp, start = 10.dp, end = 10.dp)
+                    .size(32.dp)
                     .clickable { navController.navigateUp() }
             )
             OutlinedTextField(
                 singleLine = true,
-                value = searchText, onValueChange = { newText -> searchText = newText },
+                value = searchText,
+                onValueChange = { newText -> searchText = newText },
                 leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = "") },
                 placeholder = { Text(text = "Enter the search phrase") },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
+                keyboardActions = KeyboardActions(
+                    onDone = { keyboardController?.hide() }
+                ),
                 shape = RoundedCornerShape(30),
                 modifier = Modifier
                     .fillMaxWidth(.75f)
-                    .padding(vertical = 20.dp, horizontal = 12.dp)
-                    .size(5.dp, 52.dp),
-                textStyle = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.W400)
+                    .padding(top = 20.dp, start = 5.dp, bottom = 20.dp)
+                    .focusRequester(focusRequester),
+                textStyle = TextStyle(
+                    fontSize = 19.sp,
+                    fontWeight = FontWeight.W500,
+                    textAlign = TextAlign.Start
+                )
             )
             Text(
-                text = "Cancel",
-                fontWeight = FontWeight.W700,
-                fontSize = 20.sp,
+                text = "Clear",
+                fontWeight = FontWeight.W600,
+                fontSize = 22.sp,
                 color = Color.DarkGray,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 35.dp, horizontal = 5.dp)
+                    .padding(top = 34.dp, start = 12.dp)
                     .clickable {
                         searchText = TextFieldValue("")
                         keyboardController?.hide()

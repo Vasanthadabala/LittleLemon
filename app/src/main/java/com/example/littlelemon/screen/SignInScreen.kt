@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -76,8 +77,11 @@ fun SignInScreen(navController : NavHostController){
                 .fillMaxWidth()
                 .background(Color(0xFF41544E))
                 .padding(40.dp))
-        Text(text = "Signin Information", fontSize = 20.sp, fontWeight = FontWeight.W500,
-            modifier= Modifier.padding(top = 60.dp, bottom = 40.dp, start = 12.dp)
+        Text(
+            text = "Signin Information",
+            fontSize = 22.sp,
+            fontWeight = FontWeight.W600,
+            modifier= Modifier.padding(top = 40.dp, bottom = 32.dp, start = 12.dp)
         )
         Text(
             text = "Email",
@@ -125,7 +129,7 @@ fun SignInScreen(navController : NavHostController){
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 40.dp, bottom = 20.dp, start = 14.dp, end = 14.dp),
+                .padding(top = 40.dp, start = 14.dp, end = 14.dp),
             shape = RoundedCornerShape(24),
             colors = ButtonDefaults.buttonColors(Color.Yellow)
         ) {
@@ -133,21 +137,23 @@ fun SignInScreen(navController : NavHostController){
                 color = Color.Black,
                 modifier = Modifier.padding(2.dp))
         }
-        Row {
+        Row(
+            modifier = Modifier.padding(start = 80.dp, top = 20.dp)
+        ) {
             Text(
                 text = "Create Account",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Normal,
-                modifier = Modifier.padding(start = 80.dp)
             )
             Text(
                 text = "SignUp",
-                fontSize = 16.sp,
+                fontSize = 18.sp,
                 color = Color.Black,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
-                    .padding(start = 10.dp, top = 2.dp)
-                    .clickable { navController.navigate(Signup.route)})
+                    .padding(start = 10.dp)
+                    .clickable { navController.navigate(Signup.route)}
+            )
         }
 
     }

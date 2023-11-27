@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -41,6 +42,8 @@ import com.example.littlelemon.navigation.Signin
 import com.example.littlelemon.navigation.Signup
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 @Composable
@@ -63,7 +66,9 @@ fun SignUpScreen(navController:NavHostController)
 
     val auth = Firebase.auth
 
-    Column(Modifier.padding(0.dp)) {
+    Column(
+        verticalArrangement = Arrangement.Top
+    ) {
         Image(painter = painterResource(id = R.drawable.logo),
             contentDescription = "Logo",
             contentScale = ContentScale.Fit,
@@ -81,8 +86,11 @@ fun SignUpScreen(navController:NavHostController)
                 .fillMaxWidth()
                 .background(Color(0xFF41544E))
                 .padding(40.dp))
-        Text(text = "Personal Information", fontSize = 20.sp, fontWeight = FontWeight.W500,
-            modifier= Modifier.padding(top = 60.dp, bottom = 40.dp, start = 12.dp)
+        Text(
+            text = "Personal Information",
+            fontSize = 22.sp,
+            fontWeight = FontWeight.W600,
+            modifier= Modifier.padding(top = 40.dp, bottom = 32.dp, start = 12.dp)
         )
         Text(
             text = "Username",
@@ -137,7 +145,7 @@ fun SignUpScreen(navController:NavHostController)
             {
                 Toast.makeText(context, "Registration unsuccessful. Please enter all data", Toast.LENGTH_SHORT).show()
             }else {
-                signUpWithEmailAndPassword(auth,email.text, password.text, navController, context)
+                signUpWithEmailAndPassword(auth,email.text, password.text, username.text, navController, context)
             }
         },
             elevation = ButtonDefaults.buttonElevation(
@@ -146,7 +154,7 @@ fun SignUpScreen(navController:NavHostController)
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 40.dp, bottom = 20.dp, start = 14.dp, end = 14.dp),
+                .padding(top = 40.dp, start = 14.dp, end = 14.dp),
             shape = RoundedCornerShape(24),
             colors = ButtonDefaults.buttonColors(Color.Yellow)
         ) {
@@ -154,20 +162,21 @@ fun SignUpScreen(navController:NavHostController)
                 color = Color.Black,
                 modifier = Modifier.padding(2.dp))
         }
-        Row {
+        Row(
+            modifier = Modifier.padding(start = 80.dp, top = 20.dp)
+        ){
             Text(
                 text = "Sign In To Account",
                 fontSize = 18.sp,
-                fontWeight = FontWeight.Normal,
-                modifier = Modifier.padding(start = 80.dp)
+                fontWeight = FontWeight.Normal
             )
             Text(
                 text = "SignIn",
-                fontSize = 16.sp,
+                fontSize = 18.sp,
                 color = Color.Black,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
-                    .padding(start = 10.dp, top = 2.dp)
+                    .padding(start = 10.dp)
                     .clickable { navController.navigate(Signin.route)})
         }
 
@@ -179,6 +188,7 @@ private fun signUpWithEmailAndPassword(
     auth: FirebaseAuth,
     email: String,
     password:String,
+    username:String,
     navController: NavHostController,
     context: Context
 ) {
@@ -188,6 +198,7 @@ private fun signUpWithEmailAndPassword(
     auth.createUserWithEmailAndPassword(email, password)
         .addOnCompleteListener { task ->
             if (task.isSuccessful) {
+                saveUserInfoToDatabase(auth.currentUser?.uid,username,email)
                 Toast.makeText(context, "Registration successful", Toast.LENGTH_SHORT).show()
                 editor.putBoolean("isSignedin",true).apply()
                 navController.navigate(Home.route)
@@ -200,4 +211,16 @@ private fun signUpWithEmailAndPassword(
                 Toast.makeText(context, "Registration failed.", Toast.LENGTH_SHORT).show()
             }
         }
+}
+
+private fun saveUserInfoToDatabase(userId:String?,username: String,email: String){
+    val firedb = Firebase.database
+
+    val usersRef = firedb.getReference("users")
+
+    userId?.let {
+        val userRef = usersRef.child(it)
+        userRef.child("username").setValue(username)
+        userRef.child("email").setValue(email)
+    }
 }

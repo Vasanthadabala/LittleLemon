@@ -16,19 +16,22 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.littlelemon.R
 
+@ExperimentalComposeUiApi
 @Composable
 fun BottomBar(navController: NavHostController) {
 
+    val keyboardController = LocalSoftwareKeyboardController.current
     var selectedItemIndex by rememberSaveable { mutableIntStateOf(0) }
     val currentRoute = navController.currentBackStackEntry?.destination?.route ?: ""
     selectedItemIndex = items.indexOfFirst { it.title == currentRoute }
@@ -102,11 +105,11 @@ val items = listOf(
         selectedIcon = R.drawable.search,
         unselectedIcon = R.drawable.search
     ),
-//    BottomNavigationItem(
-//        title = "Settings",
-//        selectedIcon = R.drawable.setting_selected,
-//        unselectedIcon = R.drawable.settings
-//    ),
+    BottomNavigationItem(
+        title = "Settings",
+        selectedIcon = R.drawable.setting_selected,
+        unselectedIcon = R.drawable.settings
+    ),
     BottomNavigationItem(
         title = "Cart",
         selectedIcon = R.drawable.cart_selected,
