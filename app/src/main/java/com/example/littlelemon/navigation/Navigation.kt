@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.example.littlelemon.screen.AboutScreen
 import com.example.littlelemon.screen.HomeScreen
 import com.example.littlelemon.screen.MenuItemDetilsScreen
 import com.example.littlelemon.screen.ProfileScreen
@@ -43,6 +44,10 @@ fun MyNavigation(context: Context) {
         composable(Profile.route)
         {
             ProfileScreen(navController)
+        }
+        composable(About.route)
+        {
+            AboutScreen(navController)
         }
         composable(Search.route)
         {

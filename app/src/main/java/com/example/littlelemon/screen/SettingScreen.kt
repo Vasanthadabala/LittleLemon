@@ -6,11 +6,14 @@ import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -41,6 +44,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import com.example.littlelemon.R
+import com.example.littlelemon.navigation.About
 import com.example.littlelemon.navigation.BottomBar
 import com.example.littlelemon.navigation.MenuItemDetails
 import com.example.littlelemon.navigation.Profile
@@ -105,65 +109,97 @@ fun SettingScreenComponent(navController: NavHostController){
     Column(
         modifier = Modifier
             .padding(5.dp)
-            .fillMaxSize()
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Top
     ) {
-        Text(
-            text = "Settings",
-            textAlign = TextAlign.Start,
-            fontSize = 28.sp,
-            fontWeight = FontWeight.W600,
-            modifier = Modifier.padding(top = 10.dp, bottom = 40.dp, start = 12.dp)
-        )
-        Card(
-            elevation = CardDefaults.cardElevation(5.dp),
-            shape = RoundedCornerShape(15),
-            colors = CardDefaults.cardColors(Color.White),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-                .clickable { navController.navigate(Profile.route) }
-        )
-        {
-            Row {
-                Box(
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .size(80.dp)
-                        .clip(CircleShape),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(
-                        painter = rememberImagePainter(imageUrl?.toString()),
-                        contentDescription = ""
-                    )
+        Column(
+            modifier = Modifier.padding(5.dp)
+        ){
+            Text(
+                text = "Settings",
+                textAlign = TextAlign.Start,
+                fontSize = 28.sp,
+                fontWeight = FontWeight.W600,
+                modifier = Modifier.padding(top = 10.dp, bottom = 40.dp, start = 12.dp)
+            )
+            Card(
+                elevation = CardDefaults.cardElevation(5.dp),
+                shape = RoundedCornerShape(15),
+                colors = CardDefaults.cardColors(Color.White),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp)
+                    .clickable { navController.navigate(Profile.route) }
+            )
+            {
+                Row {
+                    Box(
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .size(80.dp)
+                            .clip(CircleShape),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Image(
+                            painter = rememberImagePainter(imageUrl?.toString()),
+                            contentDescription = ""
+                        )
+                    }
+                    Column(
+                        modifier = Modifier.padding(top = 20.dp, start = 10.dp)
+                    ) {
+                        Text(
+                            text = firebaseUsername,
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.W500,
+                            modifier = Modifier.padding(15.dp)
+                        )
+                    }
                 }
-                Column(
-                    modifier = Modifier.padding(top = 20.dp, start = 10.dp)
-                ) {
-                    Text(
-                        text = firebaseUsername,
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.W500,
-                        modifier = Modifier.padding(15.dp)
-                    )
+            }
+            Card(
+                elevation = CardDefaults.cardElevation(5.dp),
+                shape = RoundedCornerShape(15),
+                colors = CardDefaults.cardColors(Color.White),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp)
+                    .clickable { navController.navigate(About.route) })
+            {
+                Row {
+                    Box(
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .size(50.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.info),
+                            contentDescription = ""
+                        )
+                    }
+                    Column(
+                        modifier = Modifier.padding(top = 5.dp, start = 10.dp)
+                    ) {
+                        Text(
+                            text = "About",
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.W500,
+                            modifier = Modifier.padding(1.dp)
+                        )
+                        Text(
+                            text = "Version Number,License",
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.W500,
+                            modifier = Modifier.padding(1.dp)
+                        )
+                    }
                 }
             }
         }
-        Card(
-            elevation = CardDefaults.cardElevation(5.dp),
-            shape = RoundedCornerShape(15),
-            colors = CardDefaults.cardColors(Color.White),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-                .clickable { navController.navigate(Profile.route) }
-        ){
-            Text(
-                text = "About",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.W500
-            )
-        }
+
+        Spacer(modifier = Modifier.weight(1f))
+
         Button(
             onClick = {
                 clearSharedPreferences(context)
@@ -180,7 +216,7 @@ fun SettingScreenComponent(navController: NavHostController){
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 200.dp, bottom = 20.dp, start = 14.dp, end = 14.dp),
+                .padding(bottom = 120.dp, start = 10.dp, end = 10.dp),
             shape = RoundedCornerShape(24),
             colors = ButtonDefaults.buttonColors(Color.Yellow)
         ) {

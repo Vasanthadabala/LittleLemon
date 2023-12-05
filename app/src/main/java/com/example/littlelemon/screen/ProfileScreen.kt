@@ -12,6 +12,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -184,6 +185,9 @@ fun ProfileScreenComponent() {
                 shape = RoundedCornerShape(15),
             )
         }
+
+        Spacer(modifier = Modifier.weight(1f))
+
         Button(
             onClick = {
                 if (isEditMode) {
@@ -199,7 +203,7 @@ fun ProfileScreenComponent() {
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 180.dp, bottom = 20.dp, start = 14.dp, end = 14.dp),
+                .padding(bottom = 10.dp, start = 10.dp, end = 10.dp),
             shape = RoundedCornerShape(24),
             colors = ButtonDefaults.buttonColors(Color.Yellow)
         ) {

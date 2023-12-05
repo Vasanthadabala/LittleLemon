@@ -16,6 +16,9 @@ object Home: Destinations {
 object Profile: Destinations {
     override val route="Profile"
 }
+object About: Destinations {
+    override val route="About"
+}
 object Search: Destinations {
     override val route="Search"
 }
