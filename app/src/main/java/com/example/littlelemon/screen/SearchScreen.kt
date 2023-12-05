@@ -93,7 +93,7 @@ fun SearchScreen(navController:NavHostController){
                 value = searchText,
                 onValueChange = { newText -> searchText = newText },
                 leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = "") },
-                placeholder = { Text(text = "Enter the search phrase") },
+                placeholder = { Text(text = "Search phrase") },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(
                     onDone = { keyboardController?.hide() }

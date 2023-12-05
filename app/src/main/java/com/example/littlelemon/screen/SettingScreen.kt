@@ -66,7 +66,7 @@ fun SettingScreen(navController : NavHostController)
     Scaffold(
         bottomBar = { BottomBar(navController = navController ) }
     ) {
-        Column(Modifier.padding(top = 50.dp)) {
+        Column(Modifier.padding(top = 50.dp, bottom = 80.dp)) {
             SettingScreenComponent(navController)
         }
     }
@@ -216,7 +216,7 @@ fun SettingScreenComponent(navController: NavHostController){
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 120.dp, start = 10.dp, end = 10.dp),
+                .padding(bottom = 10.dp, start = 10.dp, end = 10.dp),
             shape = RoundedCornerShape(24),
             colors = ButtonDefaults.buttonColors(Color.Yellow)
         ) {
