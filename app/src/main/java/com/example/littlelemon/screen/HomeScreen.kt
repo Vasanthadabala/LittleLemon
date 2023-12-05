@@ -164,7 +164,7 @@ fun HomeScreenComponent(navController: NavHostController) {
                 )
             }
             Button(
-                onClick = { Toast.makeText(context, "Order Received", Toast.LENGTH_SHORT).show() },
+                onClick = { Toast.makeText(context, "Feature Coming Soon", Toast.LENGTH_SHORT).show() },
                 shape = RoundedCornerShape(12.dp),
                 border = BorderStroke(1.dp, Color.Black),
                 colors = ButtonDefaults.buttonColors(Color.Black),
@@ -224,11 +224,16 @@ fun HomeScreenComponent(navController: NavHostController) {
 fun MenuCategory(category: String,isSelected:Boolean,onCategorySelected:()-> Unit) {
     Button(
         onClick = { onCategorySelected() },
-        colors = ButtonDefaults.buttonColors(if (isSelected) Color.DarkGray else Color.Gray),
+        colors = ButtonDefaults.buttonColors(if (isSelected) Color.DarkGray else Color.LightGray),
         shape = RoundedCornerShape(48),
         modifier = Modifier.padding(5.dp)
     ) {
-        Text(text = category)
+        Text(
+            text = category,
+            fontSize = 16.sp,
+            color = (if (isSelected) Color.White else Color(0XFF41544E)),
+            fontWeight = FontWeight.W900
+            )
     }
 }
 @ExperimentalGlideComposeApi
@@ -265,7 +270,7 @@ fun MenuDish(dish: MenuItemEntity,navController: NavHostController)
                 Text(text = "$ ${dish.price}",
                     fontWeight = FontWeight.W900,
                     fontSize = 16.sp,
-                    color = Color.DarkGray,
+                    color = Color(0XFF41544E),
                     modifier = Modifier.padding(5.dp))
             }
             Box(

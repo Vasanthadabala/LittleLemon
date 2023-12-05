@@ -1,6 +1,7 @@
 package com.example.littlelemon.screen
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -35,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,10 +44,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.example.littlelemon.data.CartItem
-import com.example.littlelemon.data.CartViewModel
 import com.example.littlelemon.data.MenuViewModel
-import com.example.littlelemon.navigation.Cart
 
 @ExperimentalGlideComposeApi
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -83,8 +82,8 @@ fun MenuItemDetilsScreen(navController:NavHostController, id: Int){
 @ExperimentalGlideComposeApi
 @Composable
 fun MenuItemDetilsScreenComponent(id:Int,navController: NavHostController ) {
-    val cartViewModel : CartViewModel = viewModel()
 
+    val context = LocalContext.current
     val menuItemDetailsviewModel: MenuViewModel = viewModel()
     val selectedDish by menuItemDetailsviewModel.getItemById(id).observeAsState()
     var counter by remember { mutableStateOf(0) }
@@ -174,16 +173,7 @@ fun MenuItemDetilsScreenComponent(id:Int,navController: NavHostController ) {
         }
         Button(
             onClick = {
-                val selectedItem = selectedDish?.let {
-                    CartItem(
-                        it.id, it.title, it.price.toDouble(), counter
-                    )
-                }
-                if (selectedItem != null) {
-                    cartViewModel.addItemToCart(selectedItem)
-                }
-                navController.navigate(Cart.route)
-
+                Toast.makeText(context, "Feature Coming Soon", Toast.LENGTH_SHORT).show()
             },
             modifier = Modifier
                 .fillMaxWidth()

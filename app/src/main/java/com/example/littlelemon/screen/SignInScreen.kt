@@ -8,7 +8,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -59,101 +61,130 @@ fun SignInScreen(navController : NavHostController){
 
     editor.putString("Mail",mail).apply()
 
-    Column(Modifier.padding(0.dp)) {
-        Image(painter = painterResource(id = R.drawable.logo),
-            contentDescription = "Logo",
-            contentScale = ContentScale.Fit,
-            modifier = Modifier
-                .fillMaxWidth()
-                .size(90.dp)
-                .padding(vertical = 20.dp, horizontal = 20.dp)
-                .align(Alignment.CenterHorizontally))
-        Text(text = "Welcome Back",
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Normal,
-            color = Color.White,
-            textAlign= TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color(0xFF41544E))
-                .padding(40.dp))
-        Text(
-            text = "Signin Information",
-            fontSize = 22.sp,
-            fontWeight = FontWeight.W600,
-            modifier= Modifier.padding(top = 40.dp, bottom = 32.dp, start = 12.dp)
-        )
-        Text(
-            text = "Email",
-            textAlign = TextAlign.Start,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.W500,
-            modifier = Modifier.padding(top = 10.dp, start = 14.dp)
-        )
-        OutlinedTextField(value = email, onValueChange ={newText->email=newText},
-            singleLine = true,
-            placeholder = { Text(text = "Email") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.White)
-                .padding(vertical = 12.dp, horizontal = 14.dp),
-            shape = RoundedCornerShape(16)
-        )
-        Text(
-            text = "Password",
-            textAlign = TextAlign.Start,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.W500,
-            modifier = Modifier.padding(top = 10.dp, start = 14.dp)
-        )
-        OutlinedTextField(value = password, onValueChange = {newText->password=newText},
-            singleLine = true,
-            placeholder = { Text(text = "Password") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.White)
-                .padding(vertical = 12.dp, horizontal = 16.dp),
-            shape = RoundedCornerShape(16)
-        )
-        Button(onClick = {
-            if (password.text.isBlank() || email.text.isBlank())
-            {
-                Toast.makeText(context, "Signin Unsuccessful. Please enter all data", Toast.LENGTH_SHORT).show()
-            }else {
-                signInWithEmailAndPassword(auth, email.text, password.text, navController, context)
-            }
-        },
-            elevation = ButtonDefaults.buttonElevation(
-                defaultElevation = 1.dp,
-                pressedElevation = 5.dp,
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 40.dp, start = 14.dp, end = 14.dp),
-            shape = RoundedCornerShape(24),
-            colors = ButtonDefaults.buttonColors(Color.Yellow)
-        ) {
-            Text(text = "Sign in", textAlign = TextAlign.Center, fontSize = 24.sp,
-                color = Color.Black,
-                modifier = Modifier.padding(2.dp))
-        }
-        Row(
-            modifier = Modifier.padding(start = 80.dp, top = 20.dp)
-        ) {
-            Text(
-                text = "Create Account",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Normal,
-            )
-            Text(
-                text = "SignUp",
-                fontSize = 18.sp,
-                color = Color.Black,
-                fontWeight = FontWeight.Bold,
+    Column(
+        Modifier.padding(5.dp)
+    ) {
+        Column {
+            Image(
+                painter = painterResource(id = R.drawable.logo),
+                contentDescription = "Logo",
+                contentScale = ContentScale.Fit,
                 modifier = Modifier
-                    .padding(start = 10.dp)
-                    .clickable { navController.navigate(Signup.route)}
+                    .fillMaxWidth()
+                    .size(90.dp)
+                    .padding(vertical = 20.dp, horizontal = 20.dp)
+                    .align(Alignment.CenterHorizontally)
             )
+            Text(
+                text = "Welcome Back",
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Normal,
+                color = Color.White,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color(0xFF41544E))
+                    .padding(40.dp)
+            )
+            Text(
+                text = "Signin Information",
+                fontSize = 22.sp,
+                fontWeight = FontWeight.W600,
+                modifier = Modifier.padding(top = 40.dp, bottom = 32.dp, start = 12.dp)
+            )
+            Text(
+                text = "Email",
+                textAlign = TextAlign.Start,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.W500,
+                modifier = Modifier.padding(top = 10.dp, start = 14.dp)
+            )
+            OutlinedTextField(
+                value = email, onValueChange = { newText -> email = newText },
+                singleLine = true,
+                placeholder = { Text(text = "Email") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White)
+                    .padding(vertical = 12.dp, horizontal = 14.dp),
+                shape = RoundedCornerShape(16)
+            )
+            Text(
+                text = "Password",
+                textAlign = TextAlign.Start,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.W500,
+                modifier = Modifier.padding(top = 10.dp, start = 14.dp)
+            )
+            OutlinedTextField(
+                value = password, onValueChange = { newText -> password = newText },
+                singleLine = true,
+                placeholder = { Text(text = "Password") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White)
+                    .padding(vertical = 12.dp, horizontal = 16.dp),
+                shape = RoundedCornerShape(16)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Column(
+            modifier = Modifier.padding(5.dp)
+        ){
+            Button(
+                onClick = {
+                    if (password.text.isBlank() || email.text.isBlank()) {
+                        Toast.makeText(
+                            context,
+                            "Signin Unsuccessful. Please enter all data",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        signInWithEmailAndPassword(
+                            auth,
+                            email.text,
+                            password.text,
+                            navController,
+                            context
+                        )
+                    }
+                },
+                elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = 1.dp,
+                    pressedElevation = 5.dp,
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 20.dp, start = 10.dp, end = 10.dp),
+                shape = RoundedCornerShape(24),
+                colors = ButtonDefaults.buttonColors(Color.Yellow)
+            ) {
+                Text(
+                    text = "Sign in", textAlign = TextAlign.Center, fontSize = 24.sp,
+                    color = Color.Black,
+                    modifier = Modifier.padding(2.dp)
+                )
+            }
+            Row(
+                modifier = Modifier.padding(start = 80.dp, top = 20.dp)
+            ) {
+                Text(
+                    text = "Create Account",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Normal,
+                )
+                Text(
+                    text = "SignUp",
+                    fontSize = 18.sp,
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(start = 10.dp)
+                        .clickable { navController.navigate(Signup.route) }
+                )
+            }
         }
 
     }
