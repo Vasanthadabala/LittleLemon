@@ -41,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -48,6 +49,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -56,6 +59,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
+@ExperimentalGlideComposeApi
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @ExperimentalMaterial3Api
 @Composable
@@ -67,6 +71,7 @@ fun ProfileScreen(navController: NavHostController) {
     }
 }
 
+@ExperimentalGlideComposeApi
 @ExperimentalMaterial3Api
 @Composable
 fun ProfileScreenComponent() {
@@ -266,6 +271,7 @@ private fun uploadImageToFirebaseStorage(context:Context,userId: String, imageUr
         }
 }
 
+@ExperimentalGlideComposeApi
 @Composable
 fun ImageSelector(onImageSelected: (Uri) -> Unit,onEditModeToggle: () -> Unit) {
     var imageUri by remember { mutableStateOf<Uri?>(null) }
@@ -302,13 +308,19 @@ fun ImageSelector(onImageSelected: (Uri) -> Unit,onEditModeToggle: () -> Unit) {
                 }, contentAlignment = Alignment.Center
         ) {
             if (imageUrl != null) {
-                Image(
-                    painter = rememberImagePainter(imageUrl?.toString()),
-                    contentDescription = "Profile Picture",
-                    modifier = Modifier
-                        .size(140.dp)
-                        .clip(CircleShape)
+                GlideImage(
+                    model = imageUrl?.toString(),
+                    contentDescription = "Image",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.size(120.dp).clip(CircleShape)
                 )
+//                Image(
+//                    painter = rememberImagePainter(imageUrl?.toString()),
+//                    contentDescription = "Profile Picture",
+//                    modifier = Modifier
+//                        .size(140.dp)
+//                        .clip(CircleShape)
+//                )
             } else {
                 Icon(
                     imageVector = Icons.Default.AccountCircle,

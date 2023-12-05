@@ -121,7 +121,8 @@ fun SettingScreenComponent(navController: NavHostController){
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
-                .clickable { navController.navigate(Profile.route) })
+                .clickable { navController.navigate(Profile.route) }
+        )
         {
             Row {
                 Box(
@@ -147,6 +148,21 @@ fun SettingScreenComponent(navController: NavHostController){
                     )
                 }
             }
+        }
+        Card(
+            elevation = CardDefaults.cardElevation(5.dp),
+            shape = RoundedCornerShape(15),
+            colors = CardDefaults.cardColors(Color.White),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+                .clickable { navController.navigate(Profile.route) }
+        ){
+            Text(
+                text = "About",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.W500
+            )
         }
         Button(
             onClick = {

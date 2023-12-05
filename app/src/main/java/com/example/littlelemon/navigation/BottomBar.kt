@@ -110,9 +110,9 @@ val items = listOf(
         selectedIcon = R.drawable.setting_selected,
         unselectedIcon = R.drawable.settings
     ),
-    BottomNavigationItem(
-        title = "Cart",
-        selectedIcon = R.drawable.cart_selected,
-        unselectedIcon = R.drawable.cart
-    )
+//    BottomNavigationItem(
+//        title = "Cart",
+//        selectedIcon = R.drawable.cart_selected,
+//        unselectedIcon = R.drawable.cart
+//    )
 )
