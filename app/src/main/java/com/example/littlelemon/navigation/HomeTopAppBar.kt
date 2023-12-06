@@ -8,11 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -34,7 +30,7 @@ import com.google.firebase.storage.ktx.storage
 
 @ExperimentalMaterial3Api
 @Composable
-fun TopBar(navController:NavHostController)
+fun HomeTopBar(navController:NavHostController)
 {
     val userId = Firebase.auth.currentUser?.uid
     var imageUrl by remember { mutableStateOf<Uri?>(null) }

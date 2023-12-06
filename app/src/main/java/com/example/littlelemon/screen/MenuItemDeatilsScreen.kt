@@ -47,6 +47,7 @@ import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.littlelemon.data.MenuViewModel
+import com.example.littlelemon.navigation.TopBar
 
 @ExperimentalGlideComposeApi
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -54,28 +55,7 @@ import com.example.littlelemon.data.MenuViewModel
 @Composable
 fun MenuItemDetilsScreen(navController:NavHostController, id: Int){
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "Item Details",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 24.sp)},
-                navigationIcon = {
-                    IconButton(
-                        onClick = {
-                            navController.popBackStack()
-                        }
-                    ){
-                        Icon(
-                            Icons.Default.ArrowBack,
-                            contentDescription = "Back",
-                            modifier = Modifier.size(30.dp)
-                        )
-                    }
-                }
-            )
-        }
+        topBar = { TopBar(name = "Item Details", navController = navController)}
     ){
         Column(Modifier.padding(top = 60.dp, bottom = 20.dp)) {
             MenuItemDetilsScreenComponent(id, navController)
