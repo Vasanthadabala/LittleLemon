@@ -32,13 +32,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.littlelemon.navigation.About
+import com.example.littlelemon.navigation.TopBar
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @ExperimentalMaterial3Api
 @Composable
 fun AboutScreen(navController: NavHostController){
     Scaffold(
-        topBar = { AboutTopBar(navController = navController) }
+        topBar = { TopBar(name = "About", navController = navController) }
     ) {
         Column(Modifier.padding(top = 50.dp)) {
             AboutScreenComponent()
@@ -102,29 +103,4 @@ fun AboutScreenComponent() {
             modifier = Modifier.padding(5.dp),
         )
     }
-}
-
-@ExperimentalMaterial3Api
-@Composable
-fun AboutTopBar(navController: NavHostController) {
-    TopAppBar(
-        title = {
-            Text(text = "About",
-                fontWeight = FontWeight.Bold,
-                fontSize = 24.sp
-            )},
-        navigationIcon = {
-            IconButton(
-                onClick = { navController.navigateUp() }) {
-                Icon(
-                    Icons.Default.ArrowBack,
-                    contentDescription = "Back",
-                    modifier = Modifier.size(26.dp)
-                )
-            }
-        },
-        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = Color.White
-        )
-    )
 }

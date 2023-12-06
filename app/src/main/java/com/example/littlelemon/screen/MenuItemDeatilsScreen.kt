@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -45,6 +47,7 @@ import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.littlelemon.data.MenuViewModel
+import com.example.littlelemon.navigation.TopBar
 
 @ExperimentalGlideComposeApi
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -52,30 +55,11 @@ import com.example.littlelemon.data.MenuViewModel
 @Composable
 fun MenuItemDetilsScreen(navController:NavHostController, id: Int){
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "Item Details",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 24.sp)},
-                navigationIcon = {
-                    IconButton(
-                        onClick = {
-                            navController.popBackStack()
-                        }
-                    ){
-                        Icon(
-                            Icons.Default.ArrowBack,
-                            contentDescription = "Back",
-                            modifier = Modifier.size(30.dp)
-                        )
-                    }
-                }
-            )
-        }
+        topBar = { TopBar(name = "Item Details", navController = navController)}
     ){
-        MenuItemDetilsScreenComponent(id,navController)
+        Column(Modifier.padding(top = 60.dp, bottom = 20.dp)) {
+            MenuItemDetilsScreenComponent(id, navController)
+        }
     }
 }
 
@@ -95,9 +79,10 @@ fun MenuItemDetilsScreenComponent(id:Int,navController: NavHostController ) {
 
 
     Column(
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .padding(top = 100.dp, start = 10.dp, end = 10.dp, bottom = 10.dp)
+            .padding(10.dp)
             .fillMaxSize()
     ) {
         Card(
@@ -107,7 +92,7 @@ fun MenuItemDetilsScreenComponent(id:Int,navController: NavHostController ) {
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            Column {
+            Column{
                 Box(
                     modifier = Modifier
                         .size(400.dp, 400.dp)
@@ -126,7 +111,7 @@ fun MenuItemDetilsScreenComponent(id:Int,navController: NavHostController ) {
                     text = selectedDish?.title ?: "Title",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.ExtraBold,
-                    modifier = Modifier.padding(start = 10.dp, top = 8.dp)
+                    modifier = Modifier.padding(10.dp)
                 )
                 Text(
                     text = selectedDish?.description ?: "Description",
@@ -134,19 +119,19 @@ fun MenuItemDetilsScreenComponent(id:Int,navController: NavHostController ) {
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
-                        .padding(start = 10.dp,top = 8.dp)
+                        .padding(10.dp)
                 )
                 Text(
                     text = "$ ${selectedDish?.price ?: "price"}",
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
                     color = Color.DarkGray,
-                    modifier = Modifier.padding(start = 10.dp,top = 8.dp)
+                    modifier = Modifier.padding(10.dp)
                 )
             }
         }
         Row(
-            modifier = Modifier.padding(top = 20.dp)
+            modifier = Modifier.padding(top = 10.dp)
         ) {
             Text(
                 text = "-",
@@ -171,6 +156,9 @@ fun MenuItemDetilsScreenComponent(id:Int,navController: NavHostController ) {
                     .clickable { counter++ }
             )
         }
+
+        Spacer(modifier = Modifier.weight(1f))
+
         Button(
             onClick = {
                 Toast.makeText(context, "Feature Coming Soon", Toast.LENGTH_SHORT).show()

@@ -3,7 +3,6 @@
 package com.example.littlelemon.screen
 
 import android.annotation.SuppressLint
-import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -13,9 +12,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -63,11 +63,8 @@ import com.example.littlelemon.data.Categories
 import com.example.littlelemon.data.MenuItemEntity
 import com.example.littlelemon.data.MenuViewModel
 import com.example.littlelemon.navigation.BottomBar
+import com.example.littlelemon.navigation.HomeTopBar
 import com.example.littlelemon.navigation.MenuItemDetails
-import com.example.littlelemon.navigation.TopBar
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 
 @ExperimentalComposeUiApi
 @ExperimentalGlideComposeApi
@@ -78,9 +75,9 @@ fun HomeScreen(navController:NavHostController)
 {
     Scaffold(
         bottomBar = { BottomBar(navController = navController ) },
-        topBar = { TopBar(navController = navController) }
+        topBar = { HomeTopBar(navController = navController) }
     ) {
-        Column(Modifier.padding(top = 50.dp)) {
+        Column(Modifier.padding(top = 50.dp, bottom = 80.dp)) {
             HomeScreenComponent(navController)
         }
     }
@@ -105,12 +102,16 @@ fun HomeScreenComponent(navController: NavHostController) {
         viewModel.fetchMenuDataIfNeeded()
     }
 
-    Column {
+    Column(
+        verticalArrangement = Arrangement.Top,
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
         Column(
             Modifier
                 .fillMaxWidth()
                 .background(color = Color(0XFF41544E))
-                .padding(8.dp),
+                .padding(5.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.Start
         ) {
@@ -181,16 +182,17 @@ fun HomeScreenComponent(navController: NavHostController) {
         }
         Column(
             modifier = Modifier
-                .fillMaxHeight()
+                .fillMaxWidth()
+                .padding(1.dp)
                 .background(Color.White)
         ) {
             Text(
                 text = "Order Delivery",
                 fontWeight = FontWeight.W600,
                 fontSize = 28.sp,
-                modifier = Modifier.padding(5.dp)
+                modifier = Modifier.padding(8.dp )
             )
-            LazyRow {
+            LazyRow{
                 items(categories) { category ->
                     MenuCategory(
                         category = category,
@@ -207,16 +209,19 @@ fun HomeScreenComponent(navController: NavHostController) {
                 }
             }
 
-            Divider(modifier = Modifier.padding(8.dp), color = Color.Gray, thickness = 1.dp)
+            Divider(modifier = Modifier.padding(5.dp), color = Color.Gray, thickness = 1.dp)
+
             LazyColumn(
                 modifier = Modifier
-                    .fillMaxHeight(.72f)
-                    .padding(top = 5.dp, bottom = 5.dp)
+                    .fillMaxWidth()
+                    .weight(1f)
             ){
                 items(filteredMenuItems) {item ->
                     MenuDish(item,navController)
                 }
             }
+
+            Spacer(modifier = Modifier.height(0.dp))
         }
     }
 }

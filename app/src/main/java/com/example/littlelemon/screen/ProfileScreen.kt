@@ -52,6 +52,7 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.example.littlelemon.navigation.TopBar
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -66,7 +67,7 @@ import com.google.firebase.storage.ktx.storage
 @Composable
 fun ProfileScreen(navController: NavHostController) {
     Scaffold(
-        topBar = {ProfileTopBar(navController = navController)},
+        topBar = { TopBar(name = "Profile", navController = navController) },
     ) {
         ProfileScreenComponent()
     }
@@ -216,33 +217,6 @@ fun ProfileScreenComponent() {
             )
         }
     }
-}
-
-
-
-@ExperimentalMaterial3Api
-@Composable
-fun ProfileTopBar(navController: NavHostController) {
-    TopAppBar(
-        title = {
-            Text(text = "Profile",
-                fontWeight = FontWeight.Bold,
-                fontSize = 24.sp
-            )},
-        navigationIcon = {
-            IconButton(
-                onClick = { navController.navigateUp() }) {
-                Icon(
-                    Icons.Default.ArrowBack,
-                    contentDescription = "Back",
-                    modifier = Modifier.size(26.dp)
-                )
-            }
-        },
-        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = Color.White
-        )
-    )
 }
 
 private fun saveUserInfoToDatabase(userId: String?, username: String, email: String,imageUrl: String) {
