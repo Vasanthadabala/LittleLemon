@@ -46,7 +46,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -88,7 +87,6 @@ fun HomeScreen(navController:NavHostController)
 @Composable
 fun HomeScreenComponent(navController: NavHostController) {
     val context = LocalContext.current
-    val keyboardController = LocalSoftwareKeyboardController.current
 
     val viewModel: MenuViewModel = viewModel()
     val menuItemsDatabase = viewModel.getAllDatabaseMenuItems().observeAsState(emptyList()).value

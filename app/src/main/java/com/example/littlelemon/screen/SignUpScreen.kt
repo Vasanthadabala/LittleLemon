@@ -41,10 +41,8 @@ import androidx.navigation.NavHostController
 import com.example.littlelemon.R
 import com.example.littlelemon.navigation.Home
 import com.example.littlelemon.navigation.Signin
-import com.example.littlelemon.navigation.Signup
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
