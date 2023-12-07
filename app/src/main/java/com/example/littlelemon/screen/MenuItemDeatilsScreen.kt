@@ -52,7 +52,7 @@ fun MenuItemDetilsScreen(navController:NavHostController, id: Int){
     Scaffold(
         topBar = { TopBar(name = "Item Details", navController = navController)}
     ){
-        Column(Modifier.padding(top = 60.dp, bottom = 20.dp)) {
+        Column(Modifier.padding(top = 50.dp, bottom = 10.dp)) {
             MenuItemDetilsScreenComponent(id)
         }
     }
@@ -90,7 +90,7 @@ fun MenuItemDetilsScreenComponent(id:Int ) {
             Column{
                 Box(
                     modifier = Modifier
-                        .size(400.dp, 400.dp)
+                        .size(400.dp, 300.dp)
                         .clip(RoundedCornerShape(0))
                         .background(Color.Transparent) // Ensures the rounded corners are visible
 
@@ -106,22 +106,21 @@ fun MenuItemDetilsScreenComponent(id:Int ) {
                     text = selectedDish?.title ?: "Title",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.ExtraBold,
-                    modifier = Modifier.padding(10.dp)
+                    modifier = Modifier.padding(vertical = 5.dp, horizontal = 10.dp)
                 )
                 Text(
                     text = selectedDish?.description ?: "Description",
                     color = Color.Gray,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .padding(10.dp)
+                    modifier = Modifier.padding(vertical = 5.dp, horizontal = 10.dp)
                 )
                 Text(
                     text = "$ ${selectedDish?.price ?: "price"}",
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
                     color = Color.DarkGray,
-                    modifier = Modifier.padding(10.dp)
+                    modifier = Modifier.padding(vertical = 5.dp, horizontal = 10.dp)
                 )
             }
         }
