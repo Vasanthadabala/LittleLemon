@@ -57,10 +57,6 @@ fun MyNavigation(context: Context) {
         {
             SettingScreen(navController)
         }
-//        composable(Cart.route)
-//        {
-//            CartScreen(navController)
-//        }
         composable(
             MenuItemDetails.route + "/{${MenuItemDetails.dishID}}",
             arguments = listOf(navArgument(MenuItemDetails.dishID) { type = NavType.IntType })

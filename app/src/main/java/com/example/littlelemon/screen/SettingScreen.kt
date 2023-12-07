@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -46,7 +45,6 @@ import coil.compose.rememberImagePainter
 import com.example.littlelemon.R
 import com.example.littlelemon.navigation.About
 import com.example.littlelemon.navigation.BottomBar
-import com.example.littlelemon.navigation.MenuItemDetails
 import com.example.littlelemon.navigation.Profile
 import com.example.littlelemon.navigation.Signin
 import com.google.firebase.auth.ktx.auth

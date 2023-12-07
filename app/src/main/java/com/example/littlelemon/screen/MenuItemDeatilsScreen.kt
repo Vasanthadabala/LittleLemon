@@ -14,18 +14,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -57,15 +52,15 @@ fun MenuItemDetilsScreen(navController:NavHostController, id: Int){
     Scaffold(
         topBar = { TopBar(name = "Item Details", navController = navController)}
     ){
-        Column(Modifier.padding(top = 60.dp, bottom = 20.dp)) {
-            MenuItemDetilsScreenComponent(id, navController)
+        Column(Modifier.padding(top = 50.dp, bottom = 10.dp)) {
+            MenuItemDetilsScreenComponent(id)
         }
     }
 }
 
 @ExperimentalGlideComposeApi
 @Composable
-fun MenuItemDetilsScreenComponent(id:Int,navController: NavHostController ) {
+fun MenuItemDetilsScreenComponent(id:Int ) {
 
     val context = LocalContext.current
     val menuItemDetailsviewModel: MenuViewModel = viewModel()
@@ -95,7 +90,7 @@ fun MenuItemDetilsScreenComponent(id:Int,navController: NavHostController ) {
             Column{
                 Box(
                     modifier = Modifier
-                        .size(400.dp, 400.dp)
+                        .size(400.dp, 300.dp)
                         .clip(RoundedCornerShape(0))
                         .background(Color.Transparent) // Ensures the rounded corners are visible
 
@@ -111,22 +106,21 @@ fun MenuItemDetilsScreenComponent(id:Int,navController: NavHostController ) {
                     text = selectedDish?.title ?: "Title",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.ExtraBold,
-                    modifier = Modifier.padding(10.dp)
+                    modifier = Modifier.padding(vertical = 5.dp, horizontal = 10.dp)
                 )
                 Text(
                     text = selectedDish?.description ?: "Description",
                     color = Color.Gray,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .padding(10.dp)
+                    modifier = Modifier.padding(vertical = 5.dp, horizontal = 10.dp)
                 )
                 Text(
                     text = "$ ${selectedDish?.price ?: "price"}",
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
                     color = Color.DarkGray,
-                    modifier = Modifier.padding(10.dp)
+                    modifier = Modifier.padding(vertical = 5.dp, horizontal = 10.dp)
                 )
             }
         }

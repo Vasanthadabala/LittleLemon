@@ -19,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -31,8 +30,8 @@ import com.example.littlelemon.R
 @Composable
 fun BottomBar(navController: NavHostController) {
 
-    val keyboardController = LocalSoftwareKeyboardController.current
     var selectedItemIndex by rememberSaveable { mutableIntStateOf(0) }
+
     val currentRoute = navController.currentBackStackEntry?.destination?.route ?: ""
     selectedItemIndex = items.indexOfFirst { it.title == currentRoute }
 

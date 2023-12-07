@@ -8,7 +8,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Menu
+import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,10 +35,12 @@ import com.example.littlelemon.R
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api
 @Composable
-fun HomeTopBar(navController:NavHostController)
+fun HomeTopBar(scope:CoroutineScope,drawerState: DrawerState,navController:NavHostController)
 {
     val userId = Firebase.auth.currentUser?.uid
     var imageUrl by remember { mutableStateOf<Uri?>(null) }
@@ -69,6 +79,15 @@ fun HomeTopBar(navController:NavHostController)
                     modifier = Modifier.clickable { navController.navigate(Profile.route) }
                 )
             }
+        },
+        navigationIcon = {
+                IconButton(onClick = { scope.launch { drawerState.open() } }) {
+                    Icon(
+                        imageVector = Icons.Default.Menu,
+                        contentDescription = "Menu",
+                        modifier = Modifier.size(32.dp)
+                    )
+                }
         }
     )
 }

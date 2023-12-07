@@ -62,7 +62,7 @@ fun SignInScreen(navController : NavHostController){
     editor.putString("Mail",mail).apply()
 
     Column(
-        Modifier.padding(5.dp)
+        verticalArrangement = Arrangement.Top
     ) {
         Column {
             Image(
@@ -84,20 +84,20 @@ fun SignInScreen(navController : NavHostController){
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(Color(0xFF41544E))
-                    .padding(40.dp)
+                    .padding(30.dp)
             )
             Text(
                 text = "Signin Information",
                 fontSize = 22.sp,
                 fontWeight = FontWeight.W600,
-                modifier = Modifier.padding(top = 40.dp, bottom = 32.dp, start = 12.dp)
+                modifier = Modifier.padding(vertical = 20.dp, horizontal = 10.dp)
             )
             Text(
                 text = "Email",
                 textAlign = TextAlign.Start,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.W500,
-                modifier = Modifier.padding(top = 10.dp, start = 14.dp)
+                modifier = Modifier.padding(vertical = 5.dp, horizontal = 15.dp)
             )
             OutlinedTextField(
                 value = email, onValueChange = { newText -> email = newText },
@@ -114,7 +114,7 @@ fun SignInScreen(navController : NavHostController){
                 textAlign = TextAlign.Start,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.W500,
-                modifier = Modifier.padding(top = 10.dp, start = 14.dp)
+                modifier = Modifier.padding(vertical = 5.dp, horizontal = 15.dp)
             )
             OutlinedTextField(
                 value = password, onValueChange = { newText -> password = newText },
@@ -157,7 +157,7 @@ fun SignInScreen(navController : NavHostController){
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 20.dp, start = 10.dp, end = 10.dp),
+                    .padding(top = 10.dp, start = 10.dp, end = 10.dp),
                 shape = RoundedCornerShape(24),
                 colors = ButtonDefaults.buttonColors(Color.Yellow)
             ) {
@@ -168,7 +168,7 @@ fun SignInScreen(navController : NavHostController){
                 )
             }
             Row(
-                modifier = Modifier.padding(start = 80.dp, top = 20.dp)
+                modifier = Modifier.padding(start = 80.dp, top = 10.dp)
             ) {
                 Text(
                     text = "Create Account",
@@ -203,7 +203,6 @@ private fun signInWithEmailAndPassword(
     auth.signInWithEmailAndPassword(email, password)
         .addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                val user = auth.currentUser
                 Toast.makeText(context, "Signin successful", Toast.LENGTH_SHORT).show()
                 editor.putBoolean("isSignedin",true).apply()
                 navController.navigate(Home.route)
